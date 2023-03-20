@@ -10,7 +10,7 @@ RUN gem install rails bundler
 
 
 WORKDIR /opt/app
-COPY essential-photo-backend/ .
+COPY . /
 RUN bundle install
 
 CMD ["bash"]
