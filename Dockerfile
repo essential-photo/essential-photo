@@ -13,6 +13,4 @@ WORKDIR /opt/essential-backend
 COPY . /
 RUN bundle install
 
-EXPOSE 3031
-
 CMD ["rails s -p 3031"]
