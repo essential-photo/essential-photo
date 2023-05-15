@@ -20,6 +20,7 @@ default: &default
   # For details on connection pooling, see Rails configuration guide
   # https://guides.rubyonrails.org/configuring.html#database-pooling
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  username: essential_photo_backend
 
 development:
   <<: *default
@@ -82,5 +83,4 @@ test:
 production:
   <<: *default
   database: essential_photo_backend_production
-  username: essential_photo_backend
   password: <%= ENV['ESSENTIAL_PHOTO_BACKEND_DATABASE_PASSWORD'] %>
