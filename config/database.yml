@@ -5,7 +5,7 @@ default: &default
   host: db
   pool: 5
   username: essential_photo_backend
-  password: 
+  password: password
 
 development:
   <<: *default
