@@ -4,7 +4,7 @@ default: &default
   encoding: unicode
   host: db
   pool: 5
-  username: essential_photo_backend
+  username: postgres
   password: password
 
 development:
