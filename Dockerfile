@@ -1,17 +1,19 @@
-FROM ruby:3.1.2 as essential-photo-backend
+FROM node:16 as essential-photo
 
-ARG REFRESHED_AT
-ENV REFRESHED_AT $REFRESHED_AT
+# install rails/ruby
 
-SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+RUN apt-get -y update
+RUN apt-get install -y rbenv
+RUN git clone https://github.com/rbenv/rbenv.git ~/.rbenv
+RUN echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc
+RUN echo 'eval "$(rbenv init -)"' >> ~/.bashrc
 
-RUN curl -sL https://deb.nodesource.com/setup_18.x | bash -\
-  && apt-get update -qq && apt-get install -qq --no-install-recommends \
-    nodejs \
-  && apt-get upgrade -qq \
-  && apt-get clean \
-  && rm -rf /var/lib/apt/lists/*\
-  && npm install -g yarn@1
+RUN git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build
+RUN echo 'export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"' >> ~/.bashrc
+
+RUN rbenv version
+RUN rbenv install 3.1.2
+RUN rbenv global 3.1.2
 
 ENV INSTALL_PATH /opt/essential-backend
 RUN mkdir -p $INSTALL_PATH
