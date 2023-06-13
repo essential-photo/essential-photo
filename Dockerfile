@@ -1,6 +1,7 @@
 FROM cimg/ruby:3.1.2-node as essential-photo-backend
 
 ENV INSTALL_PATH /opt/essential-backend
+RUN chown -R user:user /opt/
 RUN mkdir -p $INSTALL_PATH
 
 # Install rails
