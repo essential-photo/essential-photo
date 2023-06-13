@@ -1,4 +1,4 @@
-FROM timbru31/ruby-node:3.1-slim-hydrogen as essential-photo-backend
+FROM cimg/ruby:3.1.2-node as essential-photo-backend
 
 ENV INSTALL_PATH /opt/essential-backend
 RUN mkdir -p $INSTALL_PATH
