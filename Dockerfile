@@ -4,11 +4,10 @@ FROM node:16 as essential-photo
 
 SHELL ["/bin/bash", "-c"]
 
+# rbenv install and setup.
 RUN apt-get -y update
 RUN apt-get install -y rbenv
-RUN git clone https://github.com/rbenv/rbenv.git ~/.rbenv
-RUN echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc
-RUN echo 'eval "$(rbenv init -)"' >> ~/.bashrc
+ENV PATH /root/.rbenv/bin:/root/.rbenv/shims:$PATH
 
 RUN git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build
 RUN echo 'export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"' >> ~/.bashrc
