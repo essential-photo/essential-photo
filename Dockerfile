@@ -20,14 +20,9 @@ RUN rbenv local 3.1.2
 ENV INSTALL_PATH /opt/essential-backend
 RUN mkdir -p $INSTALL_PATH
 
-# Install ruby
 
 # Install rails
-RUN gem install bundler -v 2.3.26
-RUN gem update --system 3.2.3
-# RUN gem install rails bundler
-#RUN chown -R user:user /opt/app
-
+RUN gem install rails bundler
 
 WORKDIR /opt/essential-backend
 COPY . /
