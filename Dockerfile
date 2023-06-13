@@ -27,5 +27,6 @@ WORKDIR /opt/essential-backend
 COPY . /
 RUN bundle install
 RUN rails webpacker:install:react
+RUN rails db:migrate
 
 CMD ["rails s -p 3031"]
