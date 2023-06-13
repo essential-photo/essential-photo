@@ -10,14 +10,14 @@ RUN apt-get install -y rbenv
 ENV PATH /root/.rbenv/bin:/root/.rbenv/shims:$PATH
 
 RUN git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build
-RUN echo 'export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"' >> ~/.bashrc
 
-RUN rbenv version
+# Install ruby
 RUN rbenv install 3.1.2
-RUN rbenv global 3.1.2
+RUN rbenv rehash
+RUN rbenv local 3.1.2
 
+# setup rails project
 ENV INSTALL_PATH /opt/essential-backend
-# No RUN chown -R user:user /opt/
 RUN mkdir -p $INSTALL_PATH
 
 # Install ruby
