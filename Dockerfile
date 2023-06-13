@@ -1,4 +1,4 @@
-FROM ruby:3.1.2 as essential-photo-backend
+FROM timbru31/ruby-node:latest as essential-photo-backend
 
 ENV INSTALL_PATH /opt/essential-backend
 RUN mkdir -p $INSTALL_PATH
