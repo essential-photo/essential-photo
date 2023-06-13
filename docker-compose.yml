@@ -13,7 +13,7 @@ services:
     volumes: 
       - ./tmp/db:/var/lib/postgresql/data
   backend: 
-    build: https://github.com/esteban90-dev/essential-photo-backend.git#main
+    build: https://github.com/esteban90-dev/essential-photo-backend.git#serve-react-app-from-backend
     command: rails s -p 3001 --binding 0.0.0.0 
     ports:
       - '3001:3001'
