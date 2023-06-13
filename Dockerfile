@@ -12,6 +12,6 @@ RUN gem install rails bundler
 WORKDIR /opt/essential-backend
 COPY . /
 RUN bundle install
-RUN bin/rails webpacker:install
+RUN rails webpacker:install
 
 CMD ["rails s -p 3031"]
