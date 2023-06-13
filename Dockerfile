@@ -23,7 +23,7 @@ RUN mkdir -p $INSTALL_PATH
 
 # Install rails
 RUN gem install bundler -v 2.3.26
-RUN gem install rails bundler
+# RUN gem install rails bundler
 #RUN chown -R user:user /opt/app
 
 
