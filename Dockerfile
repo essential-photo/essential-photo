@@ -29,6 +29,6 @@ COPY . .
 RUN bundle install
 
 RUN bin/rails webpacker:install
-RUN bin/rails db:migrate
+#RUN bin/rails db:migrate
 
 CMD ["rails s -p 3031"]
