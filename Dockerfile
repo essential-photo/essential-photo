@@ -25,7 +25,7 @@ RUN mkdir -p $INSTALL_PATH
 RUN gem install rails bundler
 
 WORKDIR /opt/essential-backend
-COPY . /
+COPY . .
 RUN bundle install
 RUN rails webpacker:install
 RUN rails db:migrate
