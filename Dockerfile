@@ -2,6 +2,8 @@ FROM node:16 as essential-photo
 
 # install rails/ruby
 
+SHELL ["/bin/bash", "-c"]
+
 RUN apt-get -y update
 RUN apt-get install -y rbenv
 RUN git clone https://github.com/rbenv/rbenv.git ~/.rbenv
