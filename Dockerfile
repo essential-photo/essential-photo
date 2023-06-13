@@ -26,7 +26,7 @@ RUN gem install rails bundler
 WORKDIR /opt/essential-backend
 COPY . /
 RUN bundle install
-RUN rails webpacker:install:react
+RUN rails webpacker:install
 RUN rails db:migrate
 
 CMD ["rails s -p 3031"]
