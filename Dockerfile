@@ -1,25 +1,18 @@
-FROM node:16 as essential-photo
-
-# install rails/ruby
+FROM ruby:3.1.2
 
 SHELL ["/bin/bash", "-c"]
 
-# rbenv install and setup.
-RUN apt-get -y update
-RUN apt-get install -y rbenv
-ENV PATH /root/.rbenv/bin:/root/.rbenv/shims:$PATH
-
-RUN git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build
-
-# Install ruby
-RUN rbenv install 3.1.2
-RUN rbenv rehash
-RUN rbenv local 3.1.2
+RUN curl -sL https://deb.nodesource.com/setup_16.x | bash -\
+  && apt-get update -qq && apt-get install -qq --no-install-recommends \
+    nodejs \
+  && apt-get upgrade -qq \
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/*\
+  && npm install -g yarn@1
 
 # setup rails project
 ENV INSTALL_PATH /opt/essential-backend
 RUN mkdir -p $INSTALL_PATH
-
 
 # Install rails
 RUN gem install rails bundler
@@ -28,8 +21,7 @@ WORKDIR /opt/essential-backend
 COPY . .
 RUN bundle install
 
-RUN bin/rails webpacker:install
-RUN bin/rails webpacker:install:react
-#RUN bin/rails db:migrate
+RUN rails webpacker:install \
+    rails webpacker:install:react
 
 CMD ["bin/rails s -p 3031"]
