@@ -21,7 +21,4 @@ WORKDIR /opt/essential-backend
 COPY . .
 RUN bundle install
 
-RUN rails webpacker:install \
-    rails webpacker:install:react
-
 CMD ["bin/rails s -p 3031"]

@@ -15,7 +15,6 @@ services:
       - db_data:/var/lib/postgresql/data
   backend: 
     build: .
-    #build: https://github.com/esteban90-dev/essential-photo-backend.git#serve-react-app-from-backend
     command: bin/rails s -p 3001 --binding 0.0.0.0
     entrypoint: ["/opt/essential-backend/docker-entrypoint.sh"]
     ports:
