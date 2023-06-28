@@ -27,6 +27,8 @@ services:
       DB_NAME: essential_photo_backend_development
       DB_USER: postgres
       DB_PASSWORD: password
+    volumes:
+      - .:/opt/essential-backend
 volumes:
   db_data:
 networks:
