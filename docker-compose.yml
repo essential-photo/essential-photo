@@ -1,0 +1,34 @@
+--- 
+
+version: '3'
+
+services:
+  db:
+    image: postgres:14.7-alpine
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_DB: essential_photo_backend_development
+      POSTGRES_PASSWORD: password
+    command: "postgres -c 'max_connections=500'"
+    volumes: 
+      - db_data:/var/lib/postgresql/data
+  backend: 
+    build: .
+    #build: https://github.com/esteban90-dev/essential-photo-backend.git#serve-react-app-from-backend
+    command: bin/rails s -p 3001 --binding 0.0.0.0
+    entrypoint: ["/opt/essential-backend/docker-entrypoint.sh"]
+    ports:
+      - '3001:3001'
+    depends_on:
+      - db
+    environment:
+      DB_HOST: localhost
+      DB_NAME: essential_photo_backend_development
+      DB_USER: postgres
+      DB_PASSWORD: password
+volumes:
+  db_data:
+networks:
+  default:
+    name: local_network
