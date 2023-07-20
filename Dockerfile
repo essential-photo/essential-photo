@@ -20,6 +20,6 @@ RUN gem install rails bundler
 WORKDIR /opt/essential-backend
 COPY . .
 RUN bundle install
-RUN bundle exec vite install
+
 
 CMD ["bin/rails s -p 3031"]
