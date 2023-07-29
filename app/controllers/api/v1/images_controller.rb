@@ -94,6 +94,19 @@ class Api::V1::ImagesController < ApplicationController
     end
   end
 
+  # Delete Image
+
+  def destroy
+    
+    if Image.exists?(params[:id])
+      @image = Image.find(params[:id])
+      @image.destroy
+    render json:  {message: "Image id: #{params[:id]} Deleted Successfully"}, status: :ok
+    else
+      render json:  {message: "Image not found"}, status: :unprocessable_entity
+    end
+  end
+
   private
 
   def formatted_image(image)
