@@ -16,7 +16,7 @@ services:
   backend: 
     build: .
     command: bin/rails s -p 3001 --binding 0.0.0.0
-    entrypoint: ["/opt/essential-backend/docker-entrypoint.sh"]
+    entrypoint: ["/opt/essential-photo/docker-entrypoint.sh"]
     ports:
       - '3001:3001'
     depends_on:
@@ -27,7 +27,7 @@ services:
       DB_USER: postgres
       DB_PASSWORD: password
     volumes:
-      - .:/opt/essential-backend
+      - .:/opt/essential-photo
 volumes:
   db_data:
 networks:
