@@ -2,12 +2,14 @@ import React from 'react';
 import './AdminImageCard.css';
 import EditImage from './EditImage';
 import editIcon from '../images/pencil-icon.svg';
+import deleteIcon from '../images/ph_trash.svg';
 
 export default function AdminImageCard(props) {
-  const [isHovered, setIsHovered] = React.useState(false);
+  const [isEditHovered, setEditIsHovered] = React.useState(false);
+  const [isDeleteHovered, setDeleteIsHovered] = React.useState(false);
   const [isEditImageDisplayed, setIsEditImageDisplayed] = React.useState(false);
 
-  function getEditIconClass() {
+  function getIconClass(isHovered) {
     if (isHovered) {
       return 'adminImageCard__icon adminImageCard__icon--hovered';
     }
@@ -39,10 +41,18 @@ export default function AdminImageCard(props) {
           <div className="adminImageCard__footer">
             <img
               src={editIcon}
-              className={getEditIconClass()}
+              className={getIconClass(isEditHovered)}
               alt="this is an edit icon"
-              onMouseEnter={() => {setIsHovered(true)}}
-              onMouseLeave={() => {setIsHovered(false)}}
+              onMouseEnter={() => {setEditIsHovered(true)}}
+              onMouseLeave={() => {setEditIsHovered(false)}}
+              onClick={() => setIsEditImageDisplayed(true)}
+            ></img>
+            <img
+              src={deleteIcon}
+              className={getIconClass(isDeleteHovered)}
+              alt="this is a delete icon"
+              onMouseEnter={() => {setDeleteIsHovered(true)}}
+              onMouseLeave={() => {setDeleteIsHovered(false)}}
               onClick={() => setIsEditImageDisplayed(true)}
             ></img>
           </div>
