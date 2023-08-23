@@ -11,13 +11,13 @@ RUN curl -sL https://deb.nodesource.com/setup_16.x | bash -\
   && npm install -g yarn@1
 
 # setup rails project
-ENV INSTALL_PATH /opt/essential-backend
+ENV INSTALL_PATH /opt/essential-photo
 RUN mkdir -p $INSTALL_PATH
 
 # Install rails
 RUN gem install rails bundler
 
-WORKDIR /opt/essential-backend
+WORKDIR /opt/essential-photo
 COPY . .
 RUN bundle install
 
