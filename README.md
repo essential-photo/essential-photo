@@ -1,4 +1,4 @@
-# essential-photo-backend
+# essential-photo
 
 test jira connection
 

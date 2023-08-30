@@ -1,5 +1,5 @@
 {
-  "name": "essential-photo-backend",
+  "name": "essential-photo",
   "private": true,
   "dependencies": {
     "@babel/preset-react": "^7.22.5",
