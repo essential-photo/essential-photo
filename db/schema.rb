@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_09_03_205208) do
+ActiveRecord::Schema.define(version: 2023_09_03_210810) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -91,6 +91,8 @@ ActiveRecord::Schema.define(version: 2023_09_03_205208) do
     t.string "title"
     t.text "description"
     t.boolean "is_public", null: false
+    t.bigint "album_id"
+    t.index ["album_id"], name: "index_images_on_album_id"
   end
 
   create_table "tags", force: :cascade do |t|
@@ -103,4 +105,5 @@ ActiveRecord::Schema.define(version: 2023_09_03_205208) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "albums", "albums"
+  add_foreign_key "images", "albums"
 end
