@@ -8,6 +8,8 @@ class Image < ApplicationRecord
   validates :image, attached: true, content_type: [:png, :jpg, :jpeg]
   validates :is_public, inclusion: [true, false]
 
+  validates_with AlbumIdValidator
+
   # return images that have all supplied tags
   scope :tagged_with, ->(tags) do
     select('*')
