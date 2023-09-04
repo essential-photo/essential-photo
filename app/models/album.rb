@@ -6,5 +6,6 @@ class Album < ActiveRecord::Base
     validates :name, presence: true
 
     validates_with AlbumIdValidator
+    validates_with AlbumCantReferToSelfValidator
 end
     
