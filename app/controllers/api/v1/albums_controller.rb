@@ -46,14 +46,14 @@ class Api::V1::AlbumsController < ApplicationController
     private
 
     def album_params 
-        params.require(:album).permit(:name, :album_id)
+        params.require(:album).permit(:name, :parent_album_id)
     end
 
     def formatted_album(album)
         return {
             id: album.id,
             name: album.name,
-            parent_album_id: album.album_id
+            parent_album_id: album.parent_album_id
         }
     end
 end
