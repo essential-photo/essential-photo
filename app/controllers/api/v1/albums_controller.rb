@@ -29,6 +29,16 @@ class Api::V1::AlbumsController < ApplicationController
         end
     end
 
+    def destroy
+        if Album.exists?(params[:id])
+            @album = Album.find(params[:id])
+            @album.destroy
+            render json:  {message: "Album id: #{params[:id]} Deleted Successfully"}, status: :ok
+        else
+            render json:  {message: "Album not found"}, status: :unprocessable_entity
+        end
+    end
+
     private
 
     def album_params 
