@@ -20,12 +20,16 @@ class Api::V1::AlbumsController < ApplicationController
     end
 
     def update
-        @album = Album.find(params[:id])
+        if Album.exists?(params[:id])
+            @album = Album.find(params[:id])
 
-        if @album.update(album_params)
-            render json: formatted_album(@album), status: :ok
+            if @album.update(album_params)
+                render json: formatted_album(@album), status: :ok
+            else
+                render json: @album.errors.full_messages, status: :unprocessable_entity
+            end
         else
-            render json: @album.errors.full_messages, status: :unprocessable_entity
+            render json:  {message: "Album not found"}, status: :unprocessable_entity
         end
     end
 
