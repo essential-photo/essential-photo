@@ -19,6 +19,16 @@ class Api::V1::AlbumsController < ApplicationController
         end
     end
 
+    def update
+        @album = Album.find(params[:id])
+
+        if @album.update(album_params)
+            render json: formatted_album(@album), status: :ok
+        else
+            render json: @album.errors.full_messages, status: :unprocessable_entity
+        end
+    end
+
     private
 
     def album_params 
