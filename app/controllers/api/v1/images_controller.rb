@@ -15,6 +15,11 @@ class Api::V1::ImagesController < ApplicationController
       end
     end
 
+    # filter results based on album
+    if params[:parent_album_id]
+      @images = @images.where(parent_album_id: params[:parent_album_id])
+    end
+
     # filter results based on tag
     if params[:tags]
       tags_array = params[:tags].split(",").map{|tag| tag.strip}
@@ -46,6 +51,11 @@ class Api::V1::ImagesController < ApplicationController
       thumbnail_filename = filename.insert(filename.index('.'), '_thumb')
       @image.thumbnail.attach(io: thumbnail, filename: thumbnail_filename)
     end
+
+    # add image to an album
+    if params[:parent_album_id]
+      @image.parent_album_id = params[:parent_album_id]
+    end
     
     if @image.save
       render json: formatted_image(@image), status: :created
@@ -59,6 +69,7 @@ class Api::V1::ImagesController < ApplicationController
     @image.title = params[:title]
     @image.description = params[:description]
     @image.is_public = params[:is_public]
+    @image.parent_album_id = params[:parent_album_id]
 
     # expect tags to be separated by comma,
     # and strip leading/trailing whitespace
@@ -103,6 +114,7 @@ class Api::V1::ImagesController < ApplicationController
       description: image.description,
       tags: image.tags,
       is_public: image.is_public,
+      parent_album_id: image.parent_album_id,
       image_url: url_for(image.image),
       thumbnail_url: url_for(image.thumbnail),
       created_at: image.created_at,
