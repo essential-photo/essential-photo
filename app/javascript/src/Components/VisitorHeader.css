@@ -1,17 +1,21 @@
 .visitorHeader {
+}
+
+.visitorHeader__top {
   display: flex;
   justify-content: space-between;
-  flex-wrap: wrap;
-  padding: 20px 0 5px 0;
+  padding: 25px;
 }
 
 .visitorHeader__title {
   font-size: 32px;
   font-weight: bold;
-  width: 50%;
+  width: 80%;
 }
 
 .visitorHeader__search {
+  padding-left: 25px;
+  padding-right: 25px;
   width: 50%;
 }
 
@@ -27,14 +31,16 @@
   color: #B9B9B9;
 }
 
+.visitorHeader__icon {
+  width: 25px;
+  height: 25px;
+  align-self: center;
+  cursor: pointer;
+}
+
 /* mobile styles */
 @media screen and (max-width: 550px) {
-  .visitorHeader__title {
-    width: 100%;
-  }
-  
   .visitorHeader__search {
-    width: 1000%;
-    margin-top: 10px;
+    width: 100%;
   }
 }

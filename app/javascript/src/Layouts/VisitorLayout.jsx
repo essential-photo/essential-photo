@@ -6,8 +6,9 @@ export default function VisitorLayout(props) {
   return (
     <div className="visitorLayout">
       <VisitorHeader
-        clearData={props.clearData}
-        setFetchParameters={props.setFetchParameters}
+        clearImageData={props.clearImageData}
+        setImageFetchParameters={props.setImageFetchParameters}
+        albumData={props.albumData}
         setSearchInfoText={props.setSearchInfoText}
       />
       {props.children}

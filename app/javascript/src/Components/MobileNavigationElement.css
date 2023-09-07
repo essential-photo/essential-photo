@@ -1,0 +1,12 @@
+.mobileNavigationElement {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 25px;
+  padding-block-start: 25px;
+}
+
+.mobileNavigationElement__icon {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}

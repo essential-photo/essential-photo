@@ -3,14 +3,19 @@ import './Images.css';
 import VisitorLayout from '../Layouts/VisitorLayout';
 import ShowImage from '../Components/ShowImage';
 import useCallAPI from '../CustomHooks/useCallAPI';
-import {BASE_URL, IMAGES_INDEX_ENDPOINT_PUBLIC_IMAGES_ONLY} from '../settings';
+import {
+    BASE_URL,
+    IMAGES_INDEX_ENDPOINT_PUBLIC_IMAGES_ONLY,
+    ALBUMS_INDEX_ENDPOINT
+} from '../settings';
 
 export default function Images() {
-  const {data, clearData, setFetchParameters} = useCallAPI();
+  const {data: imageData, clearData: clearImageData, setFetchParameters: setImageFetchParameters} = useCallAPI();
+  const {data: albumData, setFetchParameters: setAlbumFetchParameters} = useCallAPI();
   const [displayedImage, setDisplayedImage] = React.useState(null);
   const [searchInfoText, setSearchInfoText] = React.useState('');
 
-  const images = data.map(image => {
+  const images = imageData.map(image => {
     return (
       <div className="images__imageContainer" key={image.id}>
         <img
@@ -26,7 +31,7 @@ export default function Images() {
 
   function handleClick(event) {
     // display the fullsized image
-    data.forEach(image => {
+    imageData.forEach(image => {
       if (image.id === parseInt(event.target.id)) {
         setDisplayedImage(image);
       }
@@ -39,17 +44,17 @@ export default function Images() {
 
   function setPreviousImage() {
     // set the displayed image to the previous
-    // image in the data array
+    // image in the imageData array
     let previousImage;
-    const currentImageIndex = data.indexOf(displayedImage);
+    const currentImageIndex = imageData.indexOf(displayedImage);
 
     // when the first image is reached, loop
     // to the last image
     if (currentImageIndex === 0) {
-      previousImage = data[data.length - 1];
+      previousImage = imageData[imageData.length - 1];
     }
     else {
-      previousImage = data[currentImageIndex - 1];
+      previousImage = imageData[currentImageIndex - 1];
     }
   
     setDisplayedImage(previousImage);
@@ -57,35 +62,42 @@ export default function Images() {
 
   function setNextImage() {
     // set the displayed image to the next
-    // image in the data array
+    // image in the imageData array
     let nextImage;
-    const currentImageIndex = data.indexOf(displayedImage);
+    const currentImageIndex = imageData.indexOf(displayedImage);
 
     // when the last image is reached, loop
     // to the first image
-    if (currentImageIndex === (data.length - 1)) {
-      nextImage = data[0];
+    if (currentImageIndex === (imageData.length - 1)) {
+      nextImage = imageData[0];
     }
     else {
-      nextImage = data[currentImageIndex + 1];
+      nextImage = imageData[currentImageIndex + 1];
     }
     
     setDisplayedImage(nextImage);
   }
 
   useEffect(() => {
-    // on initial page load, fetch index of photos
-    setFetchParameters({
+    // on initial page load, fetch photos and albums
+    setImageFetchParameters({
       url: `${BASE_URL}${IMAGES_INDEX_ENDPOINT_PUBLIC_IMAGES_ONLY}`,
       method: 'GET',
       bodies: [],
     });
-  }, [setFetchParameters]);
+
+    setAlbumFetchParameters({
+      url: `${BASE_URL}${ALBUMS_INDEX_ENDPOINT}`,
+      method: 'GET',
+      bodies: [],
+    });
+  }, [setImageFetchParameters, setAlbumFetchParameters]);
 
   return (
     <VisitorLayout
-      clearData={clearData}
-      setFetchParameters={setFetchParameters}
+      clearImageData={clearImageData}
+      setImageFetchParameters={setImageFetchParameters}
+      albumData = {albumData}
       setSearchInfoText={setSearchInfoText}
     >
       {displayedImage && 
