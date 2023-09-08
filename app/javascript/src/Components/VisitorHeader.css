@@ -10,13 +10,13 @@
 .visitorHeader__title {
   font-size: 32px;
   font-weight: bold;
-  width: 80%;
+  width: 50%;
 }
 
 .visitorHeader__search {
   padding-left: 25px;
   padding-right: 25px;
-  width: 50%;
+  max-width: 500px;
 }
 
 .visitorHeader__input {
@@ -36,11 +36,4 @@
   height: 25px;
   align-self: center;
   cursor: pointer;
-}
-
-/* mobile styles */
-@media screen and (max-width: 550px) {
-  .visitorHeader__search {
-    width: 100%;
-  }
 }

@@ -29,12 +29,20 @@ export default function MobileNavigation(props) {
 
 	return (
 		<div className='mobileNavigation'>
-			<MobileNavigationElement
-				id={null}
-				getChildAlbums={getChildAlbums}
-				getAlbumName={getAlbumName}
-				getAlbumDepth={getAlbumDepth}
-			/>
+			<div className="mobileNavigation__elementContainer">
+				<MobileNavigationElement
+					id={null}
+					getChildAlbums={getChildAlbums}
+					getAlbumName={getAlbumName}
+					getAlbumDepth={getAlbumDepth}
+					clearImageData={props.clearImageData}
+					setImageFetchParameters={props.setImageFetchParameters}
+					setImageFilterText={props.setImageFilterText}
+					setIsNavDisplayed={props.setIsNavDisplayed}
+				/>
+			</div>
+			<a href='' className="mobileNavigation__link">Links</a>
+			<a href='' className="mobileNavigation__link">About</a>
 		</div>
 	)
 }

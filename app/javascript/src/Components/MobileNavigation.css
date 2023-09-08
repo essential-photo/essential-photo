@@ -1,7 +1,28 @@
 .mobileNavigation {
-	background-color: #B9B9B9;
+	display: flex;
 	font-weight: bold;
-	padding-left: 25px;
-	padding-right: 25px;
-	margin-bottom: 25px;
+	align-self: center;
+}
+
+.mobileNavigation__link {
+}
+
+/* mobile styles */
+@media screen and (max-width: 700px) {
+	.mobileNavigation {
+		flex-direction: column;
+		width: 100%;
+		background-color: #B9B9B9;
+	}
+}
+
+@media screen and (min-width: 701px) {
+	.mobileNavigation {
+		justify-content: flex-end;
+		width: 50%;
+	}
+
+	.mobileNavigation__link {
+		margin-left: 10px;
+	}
 }

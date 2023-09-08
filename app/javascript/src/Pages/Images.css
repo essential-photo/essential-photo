@@ -21,7 +21,9 @@
   cursor: pointer;
 }
 
-.images__searchInfo {
+.images__filterText {
+  padding-left: 25px;
+  margin-top: 25px;
   margin-bottom: 5px;
 }
 

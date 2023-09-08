@@ -9,7 +9,7 @@ export default function VisitorLayout(props) {
         clearImageData={props.clearImageData}
         setImageFetchParameters={props.setImageFetchParameters}
         albumData={props.albumData}
-        setSearchInfoText={props.setSearchInfoText}
+        setImageFilterText={props.setImageFilterText}
       />
       {props.children}
     </div>

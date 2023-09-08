@@ -13,7 +13,7 @@ export default function Images() {
   const {data: imageData, clearData: clearImageData, setFetchParameters: setImageFetchParameters} = useCallAPI();
   const {data: albumData, setFetchParameters: setAlbumFetchParameters} = useCallAPI();
   const [displayedImage, setDisplayedImage] = React.useState(null);
-  const [searchInfoText, setSearchInfoText] = React.useState('');
+  const [imageFilterText, setImageFilterText] = React.useState('');
 
   const images = imageData.map(image => {
     return (
@@ -98,7 +98,7 @@ export default function Images() {
       clearImageData={clearImageData}
       setImageFetchParameters={setImageFetchParameters}
       albumData = {albumData}
-      setSearchInfoText={setSearchInfoText}
+      setImageFilterText={setImageFilterText}
     >
       {displayedImage && 
         <ShowImage
@@ -108,9 +108,9 @@ export default function Images() {
           setNextImage={setNextImage}
         />
       }
-      {searchInfoText &&
-        <p className="images__searchInfo">
-          Displaying images with tags: {searchInfoText}
+      {imageFilterText &&
+        <p className="images__filterText">
+          {imageFilterText}
         </p>
       }
       <main className="images">

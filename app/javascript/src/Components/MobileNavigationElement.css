@@ -1,12 +1,26 @@
 .mobileNavigationElement {
   display: flex;
   justify-content: space-between;
-  padding-bottom: 25px;
-  padding-block-start: 25px;
+  align-items: center;
 }
 
 .mobileNavigationElement__icon {
   width: 20px;
   height: 20px;
   cursor: pointer;
+}
+
+.mobileNavigationElement__albumName {
+  cursor: pointer;
+}
+
+@media screen and (min-width: 701px) {
+  .mobileNavigationElement {
+  }
+
+	.mobileNavigationElement__icon {
+		width: 10px;
+    height: 10px;
+    margin-left: 3px;
+	}
 }
