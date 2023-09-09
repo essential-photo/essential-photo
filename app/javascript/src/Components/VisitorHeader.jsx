@@ -18,6 +18,7 @@ export default function VisitorHeader(props) {
       setImageFetchParameters={props.setImageFetchParameters}
       setImageFilterText={props.setImageFilterText}
       setIsNavDisplayed={setIsNavDisplayed}
+      isDesktopScreen={isDesktopScreen}
     />
   );
 

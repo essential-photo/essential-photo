@@ -1,25 +1,24 @@
 .mobileNavigation {
 	display: flex;
+	flex-direction: column;
+	width: 100%;
+	background-color: #B9B9B9;
+	padding: 25px;
 	font-weight: bold;
-	align-self: center;
 }
 
 .mobileNavigation__link {
-}
-
-/* mobile styles */
-@media screen and (max-width: 700px) {
-	.mobileNavigation {
-		flex-direction: column;
-		width: 100%;
-		background-color: #B9B9B9;
-	}
+	padding-top: 15px;
+	padding-bottom: 15px;
 }
 
 @media screen and (min-width: 701px) {
 	.mobileNavigation {
+		flex-direction: row;
 		justify-content: flex-end;
 		width: 50%;
+		padding: 0;
+		background-color: white;
 	}
 
 	.mobileNavigation__link {

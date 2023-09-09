@@ -2,6 +2,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding-top: 15px;
+  padding-bottom: 15px;
 }
 
 .mobileNavigationElement__icon {
@@ -16,6 +18,8 @@
 
 @media screen and (min-width: 701px) {
   .mobileNavigationElement {
+    padding-top: 5px;
+    padding-bottom: 5px;
   }
 
 	.mobileNavigationElement__icon {
