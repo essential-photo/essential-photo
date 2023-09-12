@@ -19,6 +19,7 @@ RUN gem install rails bundler
 
 WORKDIR /opt/essential-photo
 COPY . .
+RUN npm install
 RUN bundle install
 
 
