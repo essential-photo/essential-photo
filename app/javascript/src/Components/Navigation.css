@@ -1,4 +1,4 @@
-.mobileNavigation {
+.navigation {
 	display: flex;
 	flex-direction: column;
 	width: 100%;
@@ -7,13 +7,13 @@
 	font-weight: bold;
 }
 
-.mobileNavigation__link {
+.navigation__link {
 	padding-top: 15px;
 	padding-bottom: 15px;
 }
 
 @media screen and (min-width: 701px) {
-	.mobileNavigation {
+	.navigation {
 		flex-direction: row;
 		justify-content: flex-end;
 		width: 50%;
@@ -21,7 +21,7 @@
 		background-color: white;
 	}
 
-	.mobileNavigation__link {
+	.navigation__link {
 		margin-left: 10px;
 	}
 }

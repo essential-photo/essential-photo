@@ -1,15 +1,15 @@
 import React from 'react';
-import './MobileNavigationRootElement.css';
-import MobileNavigationElement from './MobileNavigationElement';
+import './NavigationRootElement.css';
+import NavigationElement from './NavigationElement';
 import plusIcon from '../images/plus-icon-large.svg';
 import minusIcon from '../images/minus-icon-large.svg';
 
-export default function MobileNavigationRootElement(props) {
+export default function NavigationRootElement(props) {
   const [areChildAlbumsDisplayed, setAreChildAlbumsDisplayed] = React.useState(false);
 
   const childAlbums = getChildAlbums(null).map(childAlbum => {
     return (
-      <MobileNavigationElement
+      <NavigationElement
         id={childAlbum.id}
         getChildAlbums={getChildAlbums}
         getAlbumName={getAlbumName}
@@ -63,6 +63,8 @@ export default function MobileNavigationRootElement(props) {
   }
 
   React.useEffect(() => {
+    // add document event listener so we can close the navigation (if opened
+    // on desktop) whenenever we click anywhere else on the page
     document.addEventListener('click', handleDocumentClick)
 
     return (() => {
@@ -73,7 +75,7 @@ export default function MobileNavigationRootElement(props) {
   return (
     <>
       <div
-        className="mobileNavigationRootElement"
+        className="navigationRootElement"
         onClick={handleClick}
       >
         <p>
@@ -82,14 +84,14 @@ export default function MobileNavigationRootElement(props) {
         { childAlbums.length > 0 &&
           <img
             src={getIcon()}
-            className="mobileNavigationRootElement__icon"
+            className="navigationRootElement__icon"
             alt="this is an icon"
             onClick={handleIconClick}
           ></img>
         }
         { (props.isDesktopScreen && areChildAlbumsDisplayed) &&
           <div 
-            className="mobileNavigationRootElement__elementContainer"
+            className="navigationRootElement__elementContainer"
             onClick={handleClick}
           >
             {childAlbums}
@@ -98,7 +100,7 @@ export default function MobileNavigationRootElement(props) {
       </div>
       { (!props.isDesktopScreen && areChildAlbumsDisplayed) &&
         <div
-          className="mobileNavigationRootElement__elementContainer"
+          className="navigationRootElement__elementContainer"
           onClick={handleClick}
         >
           {childAlbums}

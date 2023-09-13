@@ -1,4 +1,4 @@
-.mobileNavigationRootElement {
+.navigationRootElement {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -8,28 +8,28 @@
   padding-bottom: 15px;
 }
 
-.mobileNavigationRootElement__icon {
+.navigationRootElement__icon {
   width: 20px;
   height: 20px;
   cursor: pointer;
 }
 
-.mobileNavigationRootElement__elementContainer {
+.navigationRootElement__elementContainer {
 }
 
 @media screen and (min-width: 701px) {
-  .mobileNavigationRootElement {
+  .navigationRootElement {
     padding-top: 0px;
     padding-bottom: 0px;
   }
 
-	.mobileNavigationRootElement__icon {
+	.navigationRootElement__icon {
 		width: 10px;
     height: 10px;
     margin-left: 3px;
 	}
 
-  .mobileNavigationRootElement__elementContainer {
+  .navigationRootElement__elementContainer {
     position: absolute;
     right: 0;
     top: 35px;

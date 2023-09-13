@@ -1,4 +1,4 @@
-.mobileNavigationElement {
+.navigationElement {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -6,23 +6,23 @@
   padding-bottom: 15px;
 }
 
-.mobileNavigationElement__icon {
+.navigationElement__icon {
   width: 20px;
   height: 20px;
   cursor: pointer;
 }
 
-.mobileNavigationElement__albumName {
+.navigationElement__albumName {
   cursor: pointer;
 }
 
 @media screen and (min-width: 701px) {
-  .mobileNavigationElement {
+  .navigationElement {
     padding-top: 5px;
     padding-bottom: 5px;
   }
 
-	.mobileNavigationElement__icon {
+	.navigationElement__icon {
 		width: 10px;
     height: 10px;
     margin-left: 3px;

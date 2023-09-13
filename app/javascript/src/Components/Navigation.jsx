@@ -1,11 +1,11 @@
 import React from 'react';
-import './MobileNavigation.css';
-import MobileNavigationRootElement from './MobileNavigationRootElement';
+import './Navigation.css';
+import NavigationRootElement from './NavigationRootElement';
 
-export default function MobileNavigation(props) {
+export default function Navigation(props) {
 	return (
-		<div className='mobileNavigation'>
-			<MobileNavigationRootElement
+		<div className='navigation'>
+			<NavigationRootElement
 				name='Albums'
 				albumData={props.albumData}
 				clearImageData={props.clearImageData}
@@ -14,8 +14,8 @@ export default function MobileNavigation(props) {
 				setIsNavDisplayed={props.setIsNavDisplayed}
 				isDesktopScreen={props.isDesktopScreen}
 			/>
-			<a href='' className="mobileNavigation__link">Links</a>
-			<a href='' className="mobileNavigation__link">About</a>
+			<a href='' className="navigation__link">Links</a>
+			<a href='' className="navigation__link">About</a>
 		</div>
 	)
 }

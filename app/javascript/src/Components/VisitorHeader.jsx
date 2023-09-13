@@ -2,7 +2,7 @@ import React from 'react';
 import './VisitorHeader.css';
 import plusIconLarge from '../images/plus-icon-large.svg';
 import minusIconLarge from '../images/minus-icon-large.svg';
-import MobileNavigation from './MobileNavigation';
+import Navigation from './Navigation';
 import {DOMAIN_NAME, BASE_URL, IMAGES_INDEX_ENDPOINT_PUBLIC_IMAGES_ONLY} from '../settings';
 
 export default function VisitorHeader(props) {
@@ -11,8 +11,8 @@ export default function VisitorHeader(props) {
   const [isNavDisplayed, setIsNavDisplayed] = React.useState(false);
   const [isDesktopScreen, setIsDesktopScreen] = React.useState(null);
 
-  const mobileNav = (
-    <MobileNavigation
+  const navigation = (
+    <Navigation
       clearImageData={props.clearImageData}
       albumData={props.albumData}
       setImageFetchParameters={props.setImageFetchParameters}
@@ -96,9 +96,9 @@ export default function VisitorHeader(props) {
             alt="this is a plus icon"
           ></img>
         }
-        { isDesktopScreen && mobileNav }
+        { isDesktopScreen && navigation }
       </div>
-      { (!isDesktopScreen && isNavDisplayed) && mobileNav }
+      { (!isDesktopScreen && isNavDisplayed) && navigation }
       <div className="visitorHeader__search">
         <form onSubmit={handleSubmit}>
           <input

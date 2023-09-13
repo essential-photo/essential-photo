@@ -1,5 +1,5 @@
 import React from 'react';
-import './MobileNavigationElement.css';
+import './NavigationElement.css';
 import plusIcon from '../images/plus-icon-large.svg';
 import minusIcon from '../images/minus-icon-large.svg';
 import {
@@ -8,13 +8,13 @@ import {
   IMAGES_INDEX_ENDPOINT_BY_ALBUM_PUBLIC_IMAGES_ONLY
 } from '../settings';
 
-export default function MobileNavigationElement(props) {
+export default function NavigationElement(props) {
   const [areChildAlbumsDisplayed, setAreChildAlbumsDisplayed] = React.useState(false);
   const [isAlbumNameClicked, setIsAlbumNameClicked] = React.useState(false);
 
   const childAlbums = props.getChildAlbums(props.id).map(childAlbum => {
     return (
-      <MobileNavigationElement
+      <NavigationElement
         id={childAlbum.id}
         getChildAlbums={props.getChildAlbums}
         getAlbumName={props.getAlbumName}
@@ -78,11 +78,11 @@ export default function MobileNavigationElement(props) {
   return (
     <>
       <div 
-        className="mobileNavigationElement"
+        className="navigationElement"
         style={indentStyle}
       >
         <p
-          className="mobileNavigationElement__albumName"
+          className="navigationElement__albumName"
           onClick={handleAlbumNameClick}
         >
           {props.getAlbumName(props.id)}
@@ -90,7 +90,7 @@ export default function MobileNavigationElement(props) {
         { childAlbums.length > 0 &&
           <img
             src={getIcon()}
-            className="mobileNavigationElement__icon"
+            className="navigationElement__icon"
             alt="this is an icon"
             onClick={handleIconClick}
           ></img>
