@@ -28,6 +28,7 @@ export default function NavigationElement(props) {
   });
 
   const indentStyle = {
+    // calculate indent padding based on album depth
     paddingLeft: String(props.getAlbumDepth(props.id) * 10) + 'px'
   };
 

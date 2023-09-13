@@ -36,6 +36,7 @@ export default function NavigationRootElement(props) {
 	}
 
 	function getAlbumDepth(albumId, depth = 0) {
+    // get the album depth in the albumData tree
 		const album = props.albumData.filter(album => album.id === albumId)[0];
 
 		if (album) {
@@ -59,6 +60,8 @@ export default function NavigationRootElement(props) {
   }
 
   function handleClick(event) {
+    // stop event propogation so we can close nav when we click elsewhere 
+    // in the document
     event.stopPropagation();
   }
 
