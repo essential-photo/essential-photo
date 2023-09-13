@@ -5,7 +5,7 @@ import {BASE_URL, POST_IMAGES_ENDPOINT} from '../settings';
 import {VALID_UPLOAD_FILE_TYPES} from '../settings';
 
 export default function DragDrop(props) {
-  const adminImages = props.images.map(image => {
+  const adminImages = props.imageData.map(image => {
     return (
       <AdminImageCard
         key={image.id}
@@ -45,7 +45,7 @@ export default function DragDrop(props) {
     });
 
     // initiate file upload
-    props.setFetchParameters({
+    props.setImageFetchParameters({
       url: `${BASE_URL}${POST_IMAGES_ENDPOINT}`,
       method: 'POST',
       bodies: formDatas,
@@ -66,7 +66,7 @@ export default function DragDrop(props) {
         :
           <p>No images yet</p>
         }
-        {props.isLoading &&
+        {props.areImagesLoading &&
           <div className="dragDrop__overlay">
             <h1>Loading...</h1>
           </div>

@@ -7,7 +7,13 @@ import {BASE_URL, POST_IMAGES_ENDPOINT, IMAGES_INDEX_ENDPOINT_ALL_IMAGES, VALID_
 import useCallAPI from '../CustomHooks/useCallAPI';
 
 export default function AdminImages() { 
-  const {data, isLoading, updateDataItem, setFetchParameters} = useCallAPI();
+  const {
+      data: imageData,
+      isLoading: areImagesLoading,
+      updateDataItem: updateImage,
+      setFetchParameters: setImageFetchParameters
+  } = useCallAPI();
+
   const fileInputEl = React.useRef(null);
 
   function handleClick(event) {
@@ -30,7 +36,7 @@ export default function AdminImages() {
     });
 
     // initiate file upload
-    setFetchParameters({
+    setImageFetchParameters({
       url: `${BASE_URL}${POST_IMAGES_ENDPOINT}`,
       method: 'POST',
       bodies: formDatas,
@@ -42,12 +48,12 @@ export default function AdminImages() {
 
   useEffect(() => {
     // when page first loads, fetch photos from backend
-    setFetchParameters({
+    setImageFetchParameters({
       url: `${BASE_URL}${IMAGES_INDEX_ENDPOINT_ALL_IMAGES}`,
       method: 'GET',
       bodies: [],
     });
-  }, [setFetchParameters]);
+  }, [setImageFetchParameters]);
 
   return (
     <>
@@ -69,10 +75,10 @@ export default function AdminImages() {
             ></input>
           </header>
           <DragDrop
-            images={data}
-            isLoading={isLoading}
-            setFetchParameters={setFetchParameters}
-            updateImage={updateDataItem}
+            imageData={imageData}
+            areImagesLoading={areImagesLoading}
+            setImageFetchParameters={setImageFetchParameters}
+            updateImage={updateImage}
           />
         </main>
       </AdminLayout>
