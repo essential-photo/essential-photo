@@ -32,8 +32,11 @@ services:
       DB_NAME: essential_photo_backend_development
       DB_USER: postgres
       DB_PASSWORD: password
+      PIDFILE: /tmp/pids/server.pid
     volumes:
       - .:/opt/essential-photo
+    tmpfs:
+      - /tmp/pids
 volumes:
   db_data:
 networks:
