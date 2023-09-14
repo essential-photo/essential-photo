@@ -17,7 +17,11 @@ class Api::V1::ImagesController < ApplicationController
 
     # filter results based on album
     if params[:parent_album_id]
-      @images = @images.where(parent_album_id: params[:parent_album_id])
+      if params[:parent_album_id] == 'null'
+        @images = @images.where(parent_album_id: nil)
+      else
+        @images = @images.where(parent_album_id: params[:parent_album_id])
+      end
     end
 
     # filter results based on tag
