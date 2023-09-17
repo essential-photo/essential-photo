@@ -18,6 +18,7 @@ export default function AdminImages() {
   const {
       data: imageData,
       isLoading: areImagesLoading,
+      clearData: clearImageData,
       updateDataItem: updateImage,
       setFetchParameters: setImageFetchParameters
   } = useCallAPI();
@@ -105,8 +106,10 @@ export default function AdminImages() {
             areImagesLoading={areImagesLoading}
             setImageFetchParameters={setImageFetchParameters}
             updateImage={updateImage}
+            clearImageData={clearImageData}
             areAlbumsLoading={areAlbumsLoading}
             childAlbums={childAlbums}
+            setSelectedAlbumId={setSelectedAlbumId}
           />
         </main>
       </AdminLayout>

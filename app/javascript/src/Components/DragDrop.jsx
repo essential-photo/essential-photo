@@ -19,7 +19,13 @@ export default function DragDrop(props) {
 
   const albums = props.childAlbums.map(childAlbum => {
     return (
-      <AlbumCard name={childAlbum.name}/>
+      <AlbumCard
+        id={childAlbum.id}
+        name={childAlbum.name}
+        setImageFetchParameters={props.setImageFetchParameters}
+        clearImageData={props.clearImageData}
+        setSelectedAlbumId={props.setSelectedAlbumId}
+      />
     )
   });
 
