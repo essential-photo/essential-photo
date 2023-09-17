@@ -3,10 +3,18 @@ import './AdminImages.css';
 import AdminLayout from '../Layouts/AdminLayout';
 import plusIcon from '../images/plus-icon.svg';
 import DragDrop from '../Components/DragDrop';
-import {BASE_URL, POST_IMAGES_ENDPOINT, IMAGES_INDEX_ENDPOINT_ALL_IMAGES, VALID_UPLOAD_FILE_TYPES} from '../settings';
+import {
+  BASE_URL,
+  POST_IMAGES_ENDPOINT,
+  ALBUMS_INDEX_ENDPOINT,
+  IMAGES_INDEX_ENDPOINT_BY_ALBUM_PUBLIC_IMAGES_ONLY,
+  VALID_UPLOAD_FILE_TYPES
+} from '../settings';
 import useCallAPI from '../CustomHooks/useCallAPI';
 
 export default function AdminImages() { 
+  const [selectedAlbumId, setSelectedAlbumId] = React.useState(null);
+
   const {
       data: imageData,
       isLoading: areImagesLoading,
@@ -14,7 +22,18 @@ export default function AdminImages() {
       setFetchParameters: setImageFetchParameters
   } = useCallAPI();
 
+  const {
+    data: albumData,
+    isLoading: areAlbumsLoading,
+    setFetchParameters: setAlbumFetchParameters
+  } = useCallAPI();
+
   const fileInputEl = React.useRef(null);
+  const childAlbums = getChildAlbums(selectedAlbumId);
+
+  function getChildAlbums(albumId) {
+    return albumData.filter(album => album.parent_album_id === albumId);
+  }
 
   function handleClick(event) {
     fileInputEl.current.click();
@@ -47,13 +66,20 @@ export default function AdminImages() {
   }
 
   useEffect(() => {
-    // when page first loads, fetch photos from backend
+    // when page first loads, load root albums 
+    // and root images (images not belonging to an album)
     setImageFetchParameters({
-      url: `${BASE_URL}${IMAGES_INDEX_ENDPOINT_ALL_IMAGES}`,
+      url: `${BASE_URL}${IMAGES_INDEX_ENDPOINT_BY_ALBUM_PUBLIC_IMAGES_ONLY}null`,
       method: 'GET',
       bodies: [],
     });
-  }, [setImageFetchParameters]);
+
+    setAlbumFetchParameters({
+      url: `${BASE_URL}${ALBUMS_INDEX_ENDPOINT}`,
+      method: 'GET',
+      bodies: [],
+    })
+  }, [setImageFetchParameters, setAlbumFetchParameters]);
 
   return (
     <>
@@ -79,6 +105,8 @@ export default function AdminImages() {
             areImagesLoading={areImagesLoading}
             setImageFetchParameters={setImageFetchParameters}
             updateImage={updateImage}
+            areAlbumsLoading={areAlbumsLoading}
+            childAlbums={childAlbums}
           />
         </main>
       </AdminLayout>

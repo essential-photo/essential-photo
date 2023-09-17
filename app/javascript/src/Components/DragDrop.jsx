@@ -1,8 +1,10 @@
 import React from 'react';
 import './DragDrop.css';
 import AdminImageCard from './AdminImageCard';
+import AlbumCard from './AlbumCard';
 import {BASE_URL, POST_IMAGES_ENDPOINT} from '../settings';
 import {VALID_UPLOAD_FILE_TYPES} from '../settings';
+import { checkPropTypes } from 'prop-types';
 
 export default function DragDrop(props) {
   const adminImages = props.imageData.map(image => {
@@ -13,6 +15,12 @@ export default function DragDrop(props) {
         updateImage={props.updateImage}
       />
     );
+  });
+
+  const albums = props.childAlbums.map(childAlbum => {
+    return (
+      <AlbumCard name={childAlbum.name}/>
+    )
   });
 
   function handleDragEnter(event) {
@@ -52,7 +60,6 @@ export default function DragDrop(props) {
     });
   }
 
-
   return (
     <div className="dragDrop">
       <div className="dragDrop__innerContainer"
@@ -61,12 +68,23 @@ export default function DragDrop(props) {
         onDragOver={handleDragOver}
         onDrop={handleDrop}
       >
-        {adminImages.length > 0 ?
-          adminImages
-        :
-          <p>No images yet</p>
-        }
-        {props.areImagesLoading &&
+        <p className="dragDrop__heading">Albums</p>
+        <div className="dragDrop__albumsContainer">
+          {albums.length > 0 ?
+            albums
+          :
+            <p>No albums yet</p>
+          }
+        </div>
+        <p className="dragDrop__heading">Images</p>
+        <div className="dragDrop__imagesContainer">
+          {adminImages.length > 0 ?
+            adminImages
+          :
+            <p>No images yet</p>
+          }
+        </div>
+        {(props.areImagesLoading || props.areAlbumsLoading) &&
           <div className="dragDrop__overlay">
             <h1>Loading...</h1>
           </div>
