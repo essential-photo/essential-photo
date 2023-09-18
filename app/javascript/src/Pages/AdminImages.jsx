@@ -3,6 +3,7 @@ import './AdminImages.css';
 import AdminLayout from '../Layouts/AdminLayout';
 import plusIcon from '../images/plus-icon.svg';
 import DragDrop from '../Components/DragDrop';
+import BreadCrumb from '../Components/BreadCrumb';
 import {
   BASE_URL,
   POST_IMAGES_ENDPOINT,
@@ -11,6 +12,7 @@ import {
   VALID_UPLOAD_FILE_TYPES
 } from '../settings';
 import useCallAPI from '../CustomHooks/useCallAPI';
+import { preprocessCSS } from 'vite';
 
 export default function AdminImages() { 
   const [selectedAlbumId, setSelectedAlbumId] = React.useState(null);
@@ -34,6 +36,20 @@ export default function AdminImages() {
 
   function getChildAlbums(albumId) {
     return albumData.filter(album => album.parent_album_id === albumId);
+  }
+
+  function getAlbumPath(albumId) {
+    let albumPath = [];
+    let currentAlbumId = albumId;
+    let currentAlbum;
+
+    while (currentAlbumId) {
+      currentAlbum = albumData.find(album => album.id === currentAlbumId);
+      albumPath.push(currentAlbum);
+      currentAlbumId = currentAlbum.parent_album_id;
+    }
+ 
+    return albumPath.reverse();
   }
 
   function handleClick(event) {
@@ -67,27 +83,34 @@ export default function AdminImages() {
   }
 
   useEffect(() => {
-    // when page first loads, load root albums 
-    // and root images (images not belonging to an album)
     setImageFetchParameters({
-      url: `${BASE_URL}${IMAGES_INDEX_ENDPOINT_BY_ALBUM_PUBLIC_IMAGES_ONLY}null`,
+      url: `${BASE_URL}${IMAGES_INDEX_ENDPOINT_BY_ALBUM_PUBLIC_IMAGES_ONLY}${selectedAlbumId}`,
       method: 'GET',
       bodies: [],
     });
+  }, [setImageFetchParameters, selectedAlbumId]);
 
+  useEffect(() => {
     setAlbumFetchParameters({
       url: `${BASE_URL}${ALBUMS_INDEX_ENDPOINT}`,
       method: 'GET',
       bodies: [],
     })
-  }, [setImageFetchParameters, setAlbumFetchParameters]);
+  }, [setAlbumFetchParameters]);
+
+  console.log(getAlbumPath(selectedAlbumId));
 
   return (
     <>
       <AdminLayout hasHeader={true}>
         <main className="adminImages">
           <header className="adminImages__header">
-            <h3 className="adminImages__title">Images</h3>
+            <BreadCrumb 
+              selectedAlbumId={selectedAlbumId}
+              setSelectedAlbumId={setSelectedAlbumId}
+              getAlbumPath={getAlbumPath}
+              clearImageData={clearImageData}
+            />
             <button className="button" onClick={handleClick}>
               <img src={plusIcon} className="button__icon" alt="this is a plus icon"></img>
               <p>Add Images</p>

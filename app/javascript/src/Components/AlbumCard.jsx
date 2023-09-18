@@ -34,13 +34,6 @@ export default function AlbumCard(props) {
       // set the selected album
       props.setSelectedAlbumId(props.id);
 
-      // make fetch call to get images for this selected album
-      props.setImageFetchParameters({
-        url: `${BASE_URL}${IMAGES_INDEX_ENDPOINT_BY_ALBUM_PUBLIC_IMAGES_ONLY}${props.id}`,
-        method: 'GET',
-        bodies: [],
-      });
-
       setIsAlbumDoubleClicked(false);
     }
   }, [isAlbumDoubleClicked]);
