@@ -15,8 +15,7 @@ RUN set -uex; \
     apt-get install -qq --no-install-recommends nodejs -y; \
     apt-get upgrade -qq; \
     apt-get clean; \
-    rm -rf /var/lib/apt/lists/*; \
-    npm install -g yarn@1;
+    rm -rf /var/lib/apt/lists/*; 
 
 # setup rails project
 ENV INSTALL_PATH /opt/essential-photo
