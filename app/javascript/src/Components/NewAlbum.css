@@ -1,0 +1,19 @@
+.newAlbum {
+  padding: 25px;
+  border: 1px solid #B9B9B9;
+  border-radius: 5px;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.newAlbum__form {
+  display: flex;
+  flex-direction: column;
+}
+
+.newAlbum__title {
+  font-weight: bold;
+  font-size: 24px;
+}

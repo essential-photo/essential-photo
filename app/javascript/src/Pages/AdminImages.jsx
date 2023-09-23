@@ -5,6 +5,7 @@ import plusIcon from '../images/plus-icon.svg';
 import lessThanArrowIcon from '../images/less-than-arrow-icon.svg';
 import DragDrop from '../Components/DragDrop';
 import BreadCrumb from '../Components/BreadCrumb';
+import NewAlbum from '../Components/NewAlbum';
 import {
   BASE_URL,
   POST_IMAGES_ENDPOINT,
@@ -16,6 +17,7 @@ import useCallAPI from '../CustomHooks/useCallAPI';
 
 export default function AdminImages() { 
   const [selectedAlbumId, setSelectedAlbumId] = React.useState(null);
+  const [isNewAlbumDisplayed, setIsNewAlbumDisplayed] = React.useState(false);
 
   const {
       data: imageData,
@@ -61,6 +63,10 @@ export default function AdminImages() {
 
     clearImageData();
     setSelectedAlbumId(parentAlbumId);
+  }
+
+  function handleCreateAlbumClick() {
+    setIsNewAlbumDisplayed(true);
   }
 
   function handleChange(event) {
@@ -123,10 +129,15 @@ export default function AdminImages() {
                 accept=".png, .jpg, .jpeg"
                 onChange={handleChange}
               ></input>
-              <button className="button adminImages__button" onClick={handleAddImagesClick}>
+              <button className="button adminImages__button" onClick={handleCreateAlbumClick}>
                 <img src={plusIcon} className="button__icon" alt="this is a plus icon"></img>
                 <p>Create Album</p>
               </button>
+              { isNewAlbumDisplayed &&
+                <NewAlbum 
+                  close={() => setIsNewAlbumDisplayed(false)}
+                />
+              }
             </div>
             <div className="adminImages__navContainer">
               <BreadCrumb 
