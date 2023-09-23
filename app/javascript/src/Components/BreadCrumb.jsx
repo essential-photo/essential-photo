@@ -23,8 +23,12 @@ export default function BreadCrumb(props) {
   });
 
   function handleClick(albumId) {
-    props.clearImageData();
-    props.setSelectedAlbumId(albumId);
+    // only refresh if the clicked on album is different
+    // from what's currently displayed
+    if (props.selectedAlbumId != albumId) {
+      props.clearImageData();
+      props.setSelectedAlbumId(albumId);
+    }
   }
 
   return (
