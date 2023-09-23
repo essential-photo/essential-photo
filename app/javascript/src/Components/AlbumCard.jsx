@@ -8,35 +8,23 @@ import {
 } from '../settings';
 
 export default function AlbumCard(props) {
-  const [isAlbumDoubleClicked, setIsAlbumDoubleClicked] = React.useState(false);
-
-  let previousClickTimestamp = null;
+  const [isAlbumClicked, setIsAlbumClicked] = React.useState(false);
 
   function handleClick(event) {
-    // if there is a previous click timestamp, 
-    // and it was clicked less than 300ms ago,
-    // then we have a double click
-    if (previousClickTimestamp) {
-      if ((event.timeStamp - previousClickTimestamp) < 300) {
-        setIsAlbumDoubleClicked(true);
-      }
-    }
-
-    previousClickTimestamp = event.timeStamp;
+      setIsAlbumClicked(true);
   }
 
   React.useEffect(() => {
-    console.log('use effect');
-    if (isAlbumDoubleClicked) {
+    if (isAlbumClicked) {
       // clear image data
       props.clearImageData();
 
       // set the selected album
       props.setSelectedAlbumId(props.id);
 
-      setIsAlbumDoubleClicked(false);
+      setIsAlbumClicked(false);
     }
-  }, [isAlbumDoubleClicked]);
+  }, [isAlbumClicked]);
 
   return (
     <div

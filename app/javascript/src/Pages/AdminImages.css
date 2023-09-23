@@ -35,6 +35,7 @@
 }
 
 .adminImages__addImagesButton {
+  align-self: flex-end;
 }
 
 @media screen and (min-width: 701px) {
