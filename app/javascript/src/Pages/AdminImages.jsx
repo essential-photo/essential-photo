@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import './AdminImages.css';
 import AdminLayout from '../Layouts/AdminLayout';
 import plusIcon from '../images/plus-icon.svg';
+import lessThanArrowIcon from '../images/less-than-arrow-icon.svg';
 import DragDrop from '../Components/DragDrop';
 import BreadCrumb from '../Components/BreadCrumb';
 import {
@@ -51,8 +52,15 @@ export default function AdminImages() {
     return albumPath.reverse();
   }
 
-  function handleClick(event) {
+  function handleAddImagesClick(event) {
     fileInputEl.current.click();
+  }
+
+  function handleBackClick() {
+    let parentAlbumId = albumData.filter(album => album.id === selectedAlbumId)[0].parent_album_id;
+
+    clearImageData();
+    setSelectedAlbumId(parentAlbumId);
   }
 
   function handleChange(event) {
@@ -97,8 +105,6 @@ export default function AdminImages() {
     })
   }, [setAlbumFetchParameters]);
 
-  console.log(getAlbumPath(selectedAlbumId));
-
   return (
     <>
       <AdminLayout hasHeader={true}>
@@ -110,7 +116,7 @@ export default function AdminImages() {
               getAlbumPath={getAlbumPath}
               clearImageData={clearImageData}
             />
-            <button className="button" onClick={handleClick}>
+            <button className="button adminImages__addImagesButton" onClick={handleAddImagesClick}>
               <img src={plusIcon} className="button__icon" alt="this is a plus icon"></img>
               <p>Add Images</p>
             </button>
@@ -122,6 +128,12 @@ export default function AdminImages() {
               accept=".png, .jpg, .jpeg"
               onChange={handleChange}
             ></input>
+            { selectedAlbumId &&
+              <div className="adminImages__back" onClick={handleBackClick}>
+                <img src={lessThanArrowIcon} alt="this is a less than arrow icon"></img>
+                <span>Back</span>
+              </div>
+            }
           </header>
           <DragDrop
             imageData={imageData}

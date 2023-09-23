@@ -1,6 +1,5 @@
 .breadCrumb {
-  display: flex;
-  align-items: center;
+  display: none;
 }
 
 .breadCrumb__homeIcon {
@@ -18,4 +17,11 @@
   font-weight: bold;
   cursor: pointer;
   margin-right: 20px;
+}
+
+@media screen and (min-width: 701px) {
+  .breadCrumb {
+    display: flex;
+    align-items: center;
+  }
 }

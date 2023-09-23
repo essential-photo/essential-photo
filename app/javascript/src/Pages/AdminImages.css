@@ -12,8 +12,8 @@
 .adminImages__header {
   padding: 20px;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
   border-bottom: solid 1px;
   border-color: #E3E3E3;
 }
@@ -24,4 +24,27 @@
 
 .adminImages__fileInput {
   display: none;
+}
+
+.adminImages__back {
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+}
+
+.adminImages__addImagesButton {
+}
+
+@media screen and (min-width: 701px) {
+  .adminImages__header {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .adminImages__back {
+    display: none;
+  }
 }
