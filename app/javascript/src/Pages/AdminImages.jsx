@@ -110,30 +110,38 @@ export default function AdminImages() {
       <AdminLayout hasHeader={true}>
         <main className="adminImages">
           <header className="adminImages__header">
-            <BreadCrumb 
-              selectedAlbumId={selectedAlbumId}
-              setSelectedAlbumId={setSelectedAlbumId}
-              getAlbumPath={getAlbumPath}
-              clearImageData={clearImageData}
-            />
-            <button className="button adminImages__addImagesButton" onClick={handleAddImagesClick}>
-              <img src={plusIcon} className="button__icon" alt="this is a plus icon"></img>
-              <p>Add Images</p>
-            </button>
-            <input
-              type="file"
-              multiple
-              ref={fileInputEl}
-              className="adminImages__fileInput"
-              accept=".png, .jpg, .jpeg"
-              onChange={handleChange}
-            ></input>
-            { selectedAlbumId &&
-              <div className="adminImages__back" onClick={handleBackClick}>
-                <img src={lessThanArrowIcon} alt="this is a less than arrow icon"></img>
-                <span>Back</span>
-              </div>
-            }
+            <div className="adminImages__buttonContainer">
+              <button className="button adminImages__button" onClick={handleAddImagesClick}>
+                <img src={plusIcon} className="button__icon" alt="this is a plus icon"></img>
+                <p>Add Images</p>
+              </button>
+              <input
+                type="file"
+                multiple
+                ref={fileInputEl}
+                className="adminImages__fileInput"
+                accept=".png, .jpg, .jpeg"
+                onChange={handleChange}
+              ></input>
+              <button className="button adminImages__button" onClick={handleAddImagesClick}>
+                <img src={plusIcon} className="button__icon" alt="this is a plus icon"></img>
+                <p>Create Album</p>
+              </button>
+            </div>
+            <div className="adminImages__navContainer">
+              <BreadCrumb 
+                selectedAlbumId={selectedAlbumId}
+                setSelectedAlbumId={setSelectedAlbumId}
+                getAlbumPath={getAlbumPath}
+                clearImageData={clearImageData}
+              />
+              { selectedAlbumId &&
+                <div className="adminImages__back" onClick={handleBackClick}>
+                  <img src={lessThanArrowIcon} alt="this is a less than arrow icon"></img>
+                  <span>Back</span>
+                </div>
+              }
+            </div>
           </header>
           <DragDrop
             imageData={imageData}

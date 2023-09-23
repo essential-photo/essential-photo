@@ -12,8 +12,7 @@
 .adminImages__header {
   padding: 20px;
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  flex-wrap: wrap;
   border-bottom: solid 1px;
   border-color: #E3E3E3;
 }
@@ -27,25 +26,54 @@
 }
 
 .adminImages__back {
+  width: 50%;
   cursor: pointer;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
   font-weight: bold;
+  margin-top: 10px;
 }
 
-.adminImages__addImagesButton {
-  align-self: flex-end;
+.adminImages__button {
+  width: 100%;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.adminImages__buttonContainer {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.adminImages__navContainer {
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
 }
 
 @media screen and (min-width: 701px) {
-  .adminImages__header {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-  }
-
   .adminImages__back {
     display: none;
+  }
+
+  .adminImages__header {
+    flex-direction: row-reverse;
+  }
+
+  .adminImages__button {
+    width: 250px;
+    margin-bottom: 0px;
+    margin-left: 10px;
+  }
+
+  .adminImages__buttonContainer {
+    flex-wrap: nowrap;
+    width: 50%;
+  }
+
+  .adminImages__navContainer {
+    width: 50%;
   }
 }
