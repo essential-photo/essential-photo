@@ -10,7 +10,14 @@ class Api::V1::AlbumsController < ApplicationController
     end
 
     def create
-        @album = Album.new(album_params)
+        @album = Album.new
+        @album.name = params[:name]
+
+        if params[:parent_album_id] == 'null'
+            @album.parent_album_id = nil
+        else
+            @album.parent_album_id = params[:parent_album_id]
+        end
 
         if @album.save
             render json: formatted_album(@album), status: :created
@@ -22,8 +29,15 @@ class Api::V1::AlbumsController < ApplicationController
     def update
         if Album.exists?(params[:id])
             @album = Album.find(params[:id])
+            @album.name = params[:name]
+    
+            if params[:parent_album_id] == 'null'
+                @album.parent_album_id = nil
+            else
+                @album.parent_album_id = params[:parent_album_id]
+            end
 
-            if @album.update(album_params)
+            if @album.update
                 render json: formatted_album(@album), status: :ok
             else
                 render json: @album.errors.full_messages, status: :unprocessable_entity
@@ -44,10 +58,6 @@ class Api::V1::AlbumsController < ApplicationController
     end
 
     private
-
-    def album_params 
-        params.require(:album).permit(:name, :parent_album_id)
-    end
 
     def formatted_album(album)
         return {

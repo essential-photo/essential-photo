@@ -136,6 +136,8 @@ export default function AdminImages() {
               { isNewAlbumDisplayed &&
                 <NewAlbum 
                   close={() => setIsNewAlbumDisplayed(false)}
+                  setAlbumFetchParameters = {setAlbumFetchParameters}
+                  selectedAlbumId = {selectedAlbumId}
                 />
               }
             </div>
