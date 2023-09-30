@@ -16,6 +16,7 @@ import {useNavigate} from 'react-router-dom';
 
 export default function useCallAPI() {
   const [data, setData] = React.useState([]);
+  const [errors, setErrors] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(false);
   const [fetchParameters, setFetchParameters] = React.useState({
     url: '',
@@ -41,8 +42,13 @@ export default function useCallAPI() {
   }
 
   function clearData() {
-    //clear data from state
+    // clear data from state
     setData([]);
+  }
+
+  function clearErrors() {
+    // clear errors from state
+    setErrors([]);
   }
 
   React.useEffect(() => {
@@ -57,12 +63,18 @@ export default function useCallAPI() {
         body: body,
       });
 
+      const parsedResponse = await response.json();
+
       // if the response is a 401 (unauthorized), logout the user and redirect
       // to login page
       if (response.status === 401) {
         console.error('invalid credentials');
         logout();
         navigate("/login", {replace: true});
+      }
+      // if the response is anything else > 400, store the error message
+      else if (response.status >= 400) {
+        setErrors(parsedResponse);
       }
 
       // update tokens if response sends new ones
@@ -83,7 +95,6 @@ export default function useCallAPI() {
       }
 
       // save data
-      const parsedResponse = await response.json();
       setData(prevData => {
         const tempData = prevData.slice(0);
         
@@ -101,6 +112,9 @@ export default function useCallAPI() {
     if (fetchParameters.url && fetchParameters.method) {
       // set loading state
       setIsLoading(true);
+
+      // clear errors
+      setErrors([]);
 
       // send request(s)
       let promises = [];
@@ -128,5 +142,5 @@ export default function useCallAPI() {
 
   }, [fetchParameters, logout, navigate]);
 
-  return {data, isLoading, updateDataItem, clearData, setFetchParameters}
+  return {data, isLoading, errors, updateDataItem, clearData, clearErrors, setFetchParameters}
 }

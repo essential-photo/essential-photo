@@ -7,6 +7,12 @@ import {BASE_URL, POST_ALBUMS_ENDPOINT} from '../settings';
 export default function NewAlbum(props) {
   const [albumName, setAlbumName] = React.useState('');
 
+  const errors = props.albumErrors.map(error => {
+    return (
+      <p className="formSubmitErrorMessage">{error}</p>
+    )
+  });
+
   function handleChange(event) {
     setAlbumName(prevName => event.target.value);
   }
@@ -26,6 +32,11 @@ export default function NewAlbum(props) {
       bodies: [formData],
     });
   }
+
+  // clear any previous album errors as soon as the component renders
+  React.useEffect(() => {
+    props.clearAlbumErrors();
+  }, []);
 
   return (
     <ModalLayout close={props.close}>
@@ -51,6 +62,8 @@ export default function NewAlbum(props) {
             onChange={handleChange}
             value={albumName}
           ></input>
+
+          {errors.length > 0 && errors}
 
           <button
             type="submit"

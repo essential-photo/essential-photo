@@ -30,6 +30,8 @@ export default function AdminImages() {
   const {
     data: albumData,
     isLoading: areAlbumsLoading,
+    errors: albumErrors,
+    clearErrors: clearAlbumErrors,
     setFetchParameters: setAlbumFetchParameters
   } = useCallAPI();
 
@@ -138,6 +140,8 @@ export default function AdminImages() {
                   close={() => setIsNewAlbumDisplayed(false)}
                   setAlbumFetchParameters = {setAlbumFetchParameters}
                   selectedAlbumId = {selectedAlbumId}
+                  albumErrors = {albumErrors}
+                  clearAlbumErrors = {clearAlbumErrors}
                 />
               }
             </div>

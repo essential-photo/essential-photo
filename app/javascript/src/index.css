@@ -101,6 +101,11 @@ input:focus {
   outline: 2px solid #4579FF;
 }
 
+.formSubmitErrorMessage {
+  color: red;
+  margin-bottom: 24px;
+}
+
 .button {
   display: flex;
   justify-content: center;
