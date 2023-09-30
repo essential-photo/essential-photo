@@ -4,18 +4,9 @@ import AdminImageCard from './AdminImageCard';
 import AlbumCard from './AlbumCard';
 import {BASE_URL, POST_IMAGES_ENDPOINT} from '../settings';
 import {VALID_UPLOAD_FILE_TYPES} from '../settings';
-import { checkPropTypes } from 'prop-types';
 
 export default function DragDrop(props) {
-  const adminImages = props.imageData.map(image => {
-    return (
-      <AdminImageCard
-        key={image.id}
-        image={image}
-        updateImage={props.updateImage}
-      />
-    );
-  });
+  const [displayedOptionsId, setDisplayedOptionsId] = React.useState(null);
 
   const albums = props.childAlbums.map(childAlbum => {
     return (
@@ -25,8 +16,23 @@ export default function DragDrop(props) {
         setImageFetchParameters={props.setImageFetchParameters}
         clearImageData={props.clearImageData}
         setSelectedAlbumId={props.setSelectedAlbumId}
+        displayedOptionsId={displayedOptionsId}
+        setDisplayedOptionsId={setDisplayedOptionsId}
+        setAlbumFetchParameters={props.setAlbumFetchParameters}
+        albumErrors={props.albumErrors}
+        clearAlbumErrors={props.clearAlbumErrors}
       />
     )
+  });
+
+  const adminImages = props.imageData.map(image => {
+    return (
+      <AdminImageCard
+        key={image.id}
+        image={image}
+        updateImage={props.updateImage}
+      />
+    );
   });
 
   function handleDragEnter(event) {

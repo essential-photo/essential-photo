@@ -1,4 +1,4 @@
-.newAlbum {
+.albumForm {
   padding: 25px;
   border: 1px solid #B9B9B9;
   border-radius: 5px;
@@ -9,18 +9,18 @@
   position: relative;
 }
 
-.newAlbum__form {
+.albumForm__form {
   display: flex;
   flex-direction: column;
   margin-top: 25px;
 }
 
-.newAlbum__title {
+.albumForm__title {
   font-weight: bold;
   font-size: 24px;
 }
 
-.newAlbum__closeIcon {
+.albumForm__closeIcon {
   position: absolute;
   top: 0;
   right: 0;

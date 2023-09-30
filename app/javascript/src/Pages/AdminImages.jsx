@@ -5,7 +5,7 @@ import plusIcon from '../images/plus-icon.svg';
 import lessThanArrowIcon from '../images/less-than-arrow-icon.svg';
 import DragDrop from '../Components/DragDrop';
 import BreadCrumb from '../Components/BreadCrumb';
-import NewAlbum from '../Components/NewAlbum';
+import AlbumForm from '../Components/AlbumForm';
 import {
   BASE_URL,
   POST_IMAGES_ENDPOINT,
@@ -17,7 +17,7 @@ import useCallAPI from '../CustomHooks/useCallAPI';
 
 export default function AdminImages() { 
   const [selectedAlbumId, setSelectedAlbumId] = React.useState(null);
-  const [isNewAlbumDisplayed, setIsNewAlbumDisplayed] = React.useState(false);
+  const [isAlbumFormDisplayed, setIsAlbumFormDisplayed] = React.useState(false);
 
   const {
       data: imageData,
@@ -68,7 +68,7 @@ export default function AdminImages() {
   }
 
   function handleCreateAlbumClick() {
-    setIsNewAlbumDisplayed(true);
+    setIsAlbumFormDisplayed(true);
   }
 
   function handleChange(event) {
@@ -135,9 +135,9 @@ export default function AdminImages() {
                 <img src={plusIcon} className="button__icon" alt="this is a plus icon"></img>
                 <p>Create Album</p>
               </button>
-              { isNewAlbumDisplayed &&
-                <NewAlbum 
-                  close={() => setIsNewAlbumDisplayed(false)}
+              { isAlbumFormDisplayed &&
+                <AlbumForm 
+                  close={() => setIsAlbumFormDisplayed(false)}
                   setAlbumFetchParameters = {setAlbumFetchParameters}
                   selectedAlbumId = {selectedAlbumId}
                   albumErrors = {albumErrors}
@@ -169,6 +169,9 @@ export default function AdminImages() {
             areAlbumsLoading={areAlbumsLoading}
             childAlbums={childAlbums}
             setSelectedAlbumId={setSelectedAlbumId}
+            setAlbumFetchParameters = {setAlbumFetchParameters}
+            albumErrors = {albumErrors}
+            clearAlbumErrors = {clearAlbumErrors}
           />
         </main>
       </AdminLayout>

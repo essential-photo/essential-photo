@@ -73,7 +73,7 @@ export default function NavigationRootElement(props) {
     return (() => {
       document.removeEventListener('click', handleDocumentClick)
     })
-  })
+  }, [])
 
   return (
     <>

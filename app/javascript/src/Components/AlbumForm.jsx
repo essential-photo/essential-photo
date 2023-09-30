@@ -1,10 +1,10 @@
 import React from 'react';
-import './NewAlbum.css';
+import './AlbumForm.css';
 import ModalLayout from '../Layouts/ModalLayout';
 import xIcon from '../images/x-icon.svg';
 import {BASE_URL, POST_ALBUMS_ENDPOINT} from '../settings';
 
-export default function NewAlbum(props) {
+export default function AlbumForm(props) {
   const [albumName, setAlbumName] = React.useState('');
 
   const errors = props.albumErrors.map(error => {
@@ -15,6 +15,11 @@ export default function NewAlbum(props) {
 
   function handleChange(event) {
     setAlbumName(prevName => event.target.value);
+  }
+
+  function handleXClick(event) {
+    event.stopPropagation();
+    props.close();
   }
 
   function handleSubmit(event) {
@@ -40,16 +45,19 @@ export default function NewAlbum(props) {
 
   return (
     <ModalLayout close={props.close}>
-      <div className="newAlbum">
-        <h2 className="newAlbum__title">New Album</h2>
+      <div
+        className="albumForm"
+        onClick={(event) => event.stopPropagation()}
+      >
+        <h2 className="albumForm__title">New Album</h2>
         <img
           src={xIcon}
-          className="newAlbum__closeIcon"
-          onClick={() => props.close()}
+          className="albumForm__closeIcon"
+          onClick={handleXClick}
           alt="this is an X icon"
         ></img>
         <form 
-          className="newAlbum__form"
+          className="albumForm__form"
           onSubmit={handleSubmit}
         >
           <label htmlFor="name">
