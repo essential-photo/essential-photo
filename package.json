@@ -30,6 +30,8 @@
     "vite-plugin-html": "^3.2.0"
   },
   "scripts": {
-    "dev": "bin/vite dev"
+    "dev": "bin/vite dev",
+    "cypress:open": "cypress open",
+    "cy:run": "cypress run"
   }
 }
