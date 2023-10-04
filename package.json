@@ -3,6 +3,7 @@
   "private": true,
   "dependencies": {
     "@babel/preset-react": "^7.22.5",
+    "@badeball/cypress-cucumber-preprocessor": "^18.0.6",
     "@hotwired/turbo-rails": "^7.3.0",
     "@rails/actioncable": "^6.0.0",
     "@rails/activestorage": "^6.0.0",
@@ -24,6 +25,7 @@
     "@babel/plugin-proposal-private-methods": "^7.18.6",
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@vitejs/plugin-react": "^4.0.3",
+    "cypress": "^13.3.0",
     "vite": "^4.3.0",
     "vite-plugin-html": "^3.2.0"
   },
