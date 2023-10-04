@@ -13,6 +13,11 @@ services:
     command: "postgres -c 'max_connections=500'"
     volumes: 
       - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
   backend: 
     build: .
     command: bin/rails s -p 3001 --binding 0.0.0.0
@@ -20,14 +25,18 @@ services:
     ports:
       - '3001:3001'
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     environment:
       DB_HOST: localhost
       DB_NAME: essential_photo_backend_development
       DB_USER: postgres
       DB_PASSWORD: password
+      PIDFILE: /tmp/pids/server.pid
     volumes:
       - .:/opt/essential-photo
+    tmpfs:
+      - /tmp/pids
 volumes:
   db_data:
 networks:
