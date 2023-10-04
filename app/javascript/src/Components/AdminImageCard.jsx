@@ -1,6 +1,7 @@
 import React from 'react';
 import './AdminImageCard.css';
 import EditImage from './EditImage';
+import Confirmation from './Confirmation';
 import editIcon from '../images/pencil-icon.svg';
 import deleteIcon from '../images/ph_trash.svg';
 
@@ -8,6 +9,7 @@ export default function AdminImageCard(props) {
   const [isEditHovered, setEditIsHovered] = React.useState(false);
   const [isDeleteHovered, setDeleteIsHovered] = React.useState(false);
   const [isEditImageDisplayed, setIsEditImageDisplayed] = React.useState(false);
+  const [isDeleteConfirmationDisplayed, setIsDeleteConfirmationDisplayed] = React.useState(false);
 
   function getIconClass(isHovered) {
     if (isHovered) {
@@ -20,12 +22,23 @@ export default function AdminImageCard(props) {
     setIsEditImageDisplayed(false);
   }
 
+  function closeDeleteConfirmation() {
+    setIsDeleteConfirmationDisplayed(false);
+  }
+
   return (
     <>
       {isEditImageDisplayed &&
         <EditImage
           image={props.image}
           close={closeEditImage}
+          updateImage={props.updateImage}
+        />
+      }
+      {isDeleteConfirmationDisplayed &&
+        <Confirmation
+          image={props.image.id}
+          close={closeDeleteConfirmation}
           updateImage={props.updateImage}
         />
       }
@@ -43,17 +56,17 @@ export default function AdminImageCard(props) {
               src={editIcon}
               className={getIconClass(isEditHovered)}
               alt="this is an edit icon"
-              onMouseEnter={() => {setEditIsHovered(true)}}
-              onMouseLeave={() => {setEditIsHovered(false)}}
+              onMouseEnter={() => { setEditIsHovered(true) }}
+              onMouseLeave={() => { setEditIsHovered(false) }}
               onClick={() => setIsEditImageDisplayed(true)}
             ></img>
             <img
               src={deleteIcon}
               className={getIconClass(isDeleteHovered)}
               alt="this is a delete icon"
-              onMouseEnter={() => {setDeleteIsHovered(true)}}
-              onMouseLeave={() => {setDeleteIsHovered(false)}}
-              onClick={() => setIsEditImageDisplayed(true)}
+              onMouseEnter={() => { setDeleteIsHovered(true) }}
+              onMouseLeave={() => { setDeleteIsHovered(false) }}
+              onClick={() => setIsDeleteConfirmationDisplayed(true)}
             ></img>
           </div>
         </div>
