@@ -65,6 +65,11 @@ export default function AlbumForm(props) {
     }    
   }
 
+  // when component first renders, clear any fetch results
+  React.useEffect(() => {
+    props.clearAlbumFetchResults();
+  }, [])
+
   return (
     <ModalLayout close={props.close}>
       <div
