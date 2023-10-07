@@ -43,11 +43,7 @@ export default function useCallAPI() {
 
   function deleteDataItem(id) {
     setData(prevData => {
-      return prevData.map(item => {
-        if (item.id != id) {
-          return data;
-        }
-      });
+      return prevData.filter(item => item.id != id);
     });
   }
 
@@ -146,7 +142,7 @@ export default function useCallAPI() {
       // response in results, and store returned body in data
       else {
         // store the results of the fetch
-        storeFetchResults(body, parsedResponse);
+        storeFetchResults(body, response.status, parsedResponse);
         
         // if successful GET or POST, append data item(s)
         if (method === 'GET' || method === 'POST') {
@@ -178,7 +174,7 @@ export default function useCallAPI() {
 
       // send request(s)
       let promises = [];
-      if (fetchParameters.method === 'GET') {
+      if (fetchParameters.method === 'GET' || fetchParameters.method === 'DELETE') {
         promises.push(callAPI(fetchParameters.url, fetchParameters.method, null));
       }
       else {

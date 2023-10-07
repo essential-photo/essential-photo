@@ -15,6 +15,7 @@ export default function AlbumForm(props) {
 
   if (props.albumFetchResults.length > 0) {
     if (props.albumFetchResults[0].responseStatus > 400) {
+      console.log('building AlbumForm error messages');
       errors = props.albumFetchResults[0].responseBody.map(errorMessage => 
         <p className="formSubmitErrorMessage">{errorMessage}</p>
       );
@@ -67,8 +68,13 @@ export default function AlbumForm(props) {
 
   // when component first renders, clear any fetch results
   React.useEffect(() => {
-    props.clearAlbumFetchResults();
-  }, [])
+    console.log('AlbumForm: clearing album fetch results');
+    if (props.albumFetchResults.length > 0) {
+      props.clearAlbumFetchResults();
+    }
+  }, [props.albumFetchResults])
+
+  console.log('AlbumForm rendered');
 
   return (
     <ModalLayout close={props.close}>
@@ -104,7 +110,7 @@ export default function AlbumForm(props) {
 
           <button
             type="submit"
-            className="button"
+            className="button button--active"
           >
             {props.album ? 'Update Album' : 'Create Album'}
           </button>

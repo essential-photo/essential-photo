@@ -101,7 +101,7 @@ export default function Login(props) {
             error && <p className="formSubmitErrorMessage">{error}</p>
           }
 
-          <button className="button button--wide login__button">Log In</button>
+          <button className="button button--active button--wide">Log In</button>
         </form>
       </div>
     </AdminLayout>

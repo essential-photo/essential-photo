@@ -105,7 +105,7 @@ export default function EditImage(props) {
               ></input>
               <label htmlFor="isPublic">Is Public</label>
             </div>
-            <button type="submit" className="button button--wide">Update Image</button>
+            <button type="submit" className="button button--active button--wide">Update Image</button>
           </form>
         </div>
       </main>

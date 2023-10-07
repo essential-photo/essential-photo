@@ -23,7 +23,9 @@ export default function AdminImages() {
     data: imageData,
     isLoading: areImagesLoading,
     clearData: clearImageData,
-    setFetchParameters: setImageFetchParameters
+    setFetchParameters: setImageFetchParameters,
+    fetchResults: imageFetchResults,
+    clearFetchResults: clearImageFetchResults,
   } = useCallAPI();
 
   const {
@@ -112,13 +114,31 @@ export default function AdminImages() {
     })
   }, [setAlbumFetchParameters]);
 
+  // clear image fetch results
+  useEffect(() => {
+    if (imageFetchResults.length > 0) {
+      console.log('AdminImages: clearing image fetch results');
+      clearImageFetchResults();
+    }
+  }, [imageFetchResults])
+
+  // clear album fetch results
+  useEffect(() => {
+    if (albumFetchResults.length > 0) {
+      console.log('AdminImages: clearing album fetch results');
+      clearAlbumFetchResults();
+    }
+  }, [albumFetchResults])
+
+  console.log('AdminImages rendered');
+
   return (
     <>
       <AdminLayout hasHeader={true}>
         <main className="adminImages">
           <header className="adminImages__header">
             <div className="adminImages__buttonContainer">
-              <button className="button adminImages__button" onClick={handleAddImagesClick}>
+              <button className="button button--active adminImages__button" onClick={handleAddImagesClick}>
                 <img src={plusIcon} className="button__icon" alt="this is a plus icon"></img>
                 <p>Add Images</p>
               </button>
@@ -130,7 +150,7 @@ export default function AdminImages() {
                 accept=".png, .jpg, .jpeg"
                 onChange={handleChange}
               ></input>
-              <button className="button adminImages__button" onClick={handleCreateAlbumClick}>
+              <button className="button button--active adminImages__button" onClick={handleCreateAlbumClick}>
                 <img src={plusIcon} className="button__icon" alt="this is a plus icon"></img>
                 <p>Create Album</p>
               </button>

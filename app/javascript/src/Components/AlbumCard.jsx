@@ -3,11 +3,14 @@ import './AlbumCard.css';
 import folderIcon from '../images/folder-icon.svg';
 import dotsIcon from '../images/dots-icon.svg';
 import AlbumForm from './AlbumForm';
+import Confirmation from './Confirmation';
+import {BASE_URL, DELETE_ALBUMS_ENDPOINT} from '../settings';
 
 export default function AlbumCard(props) {
   const [isAlbumClicked, setIsAlbumClicked] = React.useState(false);
   const [areDotsHovered, setAreDotsHovered] = React.useState(false);
   const [isAlbumFormDisplayed, setIsAlbumFormDisplayed] = React.useState(false);
+  const [isConfirmationDisplayed, setIsConfirmationDisplayed] = React.useState(false);
 
   const options = 
     <div
@@ -20,6 +23,12 @@ export default function AlbumCard(props) {
       >
         Edit Album
       </p>
+      <p
+        className="albumCard__optionsText"
+        onClick={handleDeleteAlbumClick}
+      >
+        Delete Album
+      </p>
     </div>
 
   function handleAlbumCardClick(event) {
@@ -30,6 +39,12 @@ export default function AlbumCard(props) {
     event.stopPropagation();
     props.setDisplayedOptionsId(null);
     setIsAlbumFormDisplayed(true);
+  }
+
+  function handleDeleteAlbumClick(event) {
+    event.stopPropagation();
+    props.setDisplayedOptionsId(null);
+    setIsConfirmationDisplayed(true);
   }
 
   function handleDotsClick(event) {
@@ -85,6 +100,17 @@ export default function AlbumCard(props) {
             id: props.id,
             name: props.name
           }}
+        />
+      }
+      {isConfirmationDisplayed &&
+        <Confirmation 
+          setFetchParameters={props.setAlbumFetchParameters}
+          fetchResults={props.albumFetchResults}
+          clearFetchResults={props.clearAlbumFetchResults}
+          close={() => setIsConfirmationDisplayed(false)}
+          url={`${BASE_URL}${DELETE_ALBUMS_ENDPOINT}/${props.id}`}
+          method='DELETE'
+          bodies={[]}
         />
       }
       <div

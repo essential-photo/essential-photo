@@ -1,4 +1,4 @@
-.albumForm {
+.confirmation {
   padding: 25px;
   border: 1px solid #B9B9B9;
   border-radius: 5px;
@@ -9,21 +9,23 @@
   position: relative;
 }
 
-.albumForm__form {
-  display: flex;
-  flex-direction: column;
-  margin-top: 25px;
+.confirmation__message {
+  margin-bottom: 24px;
 }
 
-.albumForm__title {
-  font-weight: bold;
-  font-size: 24px;
-}
-
-.albumForm__closeIcon {
+.confirmation__closeIcon {
   position: absolute;
   top: 0;
   right: 0;
   padding: 10px;
   cursor: pointer;
+}
+
+.confirmation__button {
+  margin-left: 25px;
+  margin-right: 25px;
+}
+
+.confirmation__buttonContainer {
+  display: flex;
 }
