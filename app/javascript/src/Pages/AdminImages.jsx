@@ -20,19 +20,18 @@ export default function AdminImages() {
   const [isAlbumFormDisplayed, setIsAlbumFormDisplayed] = React.useState(false);
 
   const {
-      data: imageData,
-      isLoading: areImagesLoading,
-      clearData: clearImageData,
-      updateDataItem: updateImage,
-      setFetchParameters: setImageFetchParameters
+    data: imageData,
+    isLoading: areImagesLoading,
+    clearData: clearImageData,
+    setFetchParameters: setImageFetchParameters
   } = useCallAPI();
 
   const {
     data: albumData,
     isLoading: areAlbumsLoading,
-    errors: albumErrors,
-    clearErrors: clearAlbumErrors,
-    setFetchParameters: setAlbumFetchParameters
+    fetchResults: albumFetchResults,
+    clearFetchResults: clearAlbumFetchResults,
+    setFetchParameters: setAlbumFetchParameters,
   } = useCallAPI();
 
   const fileInputEl = React.useRef(null);
@@ -140,8 +139,9 @@ export default function AdminImages() {
                   close={() => setIsAlbumFormDisplayed(false)}
                   setAlbumFetchParameters = {setAlbumFetchParameters}
                   selectedAlbumId = {selectedAlbumId}
-                  albumErrors = {albumErrors}
-                  clearAlbumErrors = {clearAlbumErrors}
+                  albumFetchResults = {albumFetchResults}
+                  clearAlbumFetchResults = {clearAlbumFetchResults}
+                  album={null}
                 />
               }
             </div>
@@ -164,14 +164,14 @@ export default function AdminImages() {
             imageData={imageData}
             areImagesLoading={areImagesLoading}
             setImageFetchParameters={setImageFetchParameters}
-            updateImage={updateImage}
             clearImageData={clearImageData}
             areAlbumsLoading={areAlbumsLoading}
             childAlbums={childAlbums}
             setSelectedAlbumId={setSelectedAlbumId}
+            selectedAlbumId={selectedAlbumId}
             setAlbumFetchParameters = {setAlbumFetchParameters}
-            albumErrors = {albumErrors}
-            clearAlbumErrors = {clearAlbumErrors}
+            albumFetchResults = {albumFetchResults}
+            clearAlbumFetchResults = {clearAlbumFetchResults}
           />
         </main>
       </AdminLayout>

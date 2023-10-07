@@ -2,19 +2,15 @@ import React, { useEffect } from 'react';
 import './EditImage.css';
 import ModalLayout from '../Layouts/ModalLayout';
 import xIcon from '../images/x-icon.svg';
-import useCallAPI from '../CustomHooks/useCallAPI';
 import {BASE_URL, UPDATE_IMAGE_ENDPOINT} from '../settings';
 
 export default function EditImage(props) {
-  const {updateImage} = props;
   const [imageFormData, setImageFormData] = React.useState({
     title: props.image.title,
     description: props.image.description,
     tags: props.image.tags.map(tag => tag.name),
     isPublic: props.image.is_public,
   })
-
-  const {data, isLoading, setFetchParameters} = useCallAPI();  
 
   function handleChange(event) {
     setImageFormData(prevData => {
@@ -38,25 +34,17 @@ export default function EditImage(props) {
     formData.append('is_public', imageFormData.isPublic);
     
     //submit image update request to api
-    setFetchParameters({
+    props.setImageFetchParameters({
       url: `${BASE_URL}${UPDATE_IMAGE_ENDPOINT}/${props.image.id}`,
       method: 'PATCH',
       bodies: [formData],
     });
   }
-
-  useEffect(() => {
-    // if the update request has already been made, 
-    // update the associated image in state
-    if (data.length > 0) {
-      props.updateImage(data[data.length - 1]);
-    }
-  }, [data])
   
   return (
     <ModalLayout close={props.close} dark={true}>
       <main className="editImage">
-        {isLoading &&
+        {props.isLoading &&
           <div className="editImage__overlay">
             <h1>Loading...</h1>
           </div>

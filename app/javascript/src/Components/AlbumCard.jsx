@@ -9,14 +9,18 @@ export default function AlbumCard(props) {
   const [areDotsHovered, setAreDotsHovered] = React.useState(false);
   const [isAlbumFormDisplayed, setIsAlbumFormDisplayed] = React.useState(false);
 
-  const options = <div className="albumCard__options">
-    <p
-      className="albumCard__optionsText"
-      onClick={handleEditAlbumClick}
+  const options = 
+    <div
+      onClick={(event) => {event.stopPropagation()}}
+      className="albumCard__options"
     >
-      Edit Album
-    </p>
-  </div>
+      <p
+        className="albumCard__optionsText"
+        onClick={handleEditAlbumClick}
+      >
+        Edit Album
+      </p>
+    </div>
 
   function handleAlbumCardClick(event) {
     setIsAlbumClicked(true);
@@ -69,38 +73,44 @@ export default function AlbumCard(props) {
   }, []);
   
   return (
-    <div
-      className="albumCard"
-      onClick={handleAlbumCardClick}
-    >
-      {isAlbumFormDisplayed &&
+    <>
+     {isAlbumFormDisplayed &&
         <AlbumForm 
           close={() => setIsAlbumFormDisplayed(false)}
           setAlbumFetchParameters = {props.setAlbumFetchParameters}
+          albumFetchResults = {props.albumFetchResults}
+          clearAlbumFetchResults = {props.clearAlbumFetchResults}
           selectedAlbumId = {props.selectedAlbumId}
-          albumErrors = {props.albumErrors}
-          clearAlbumErrors = {props.clearAlbumErrors}
+          album = {{
+            id: props.id,
+            name: props.name
+          }}
         />
       }
-      <img 
-        src={folderIcon}
-        className="albumCard__icon"
-        alt="this is a folder icon"
-      ></img>
-      <span className="albumCard__name">{props.name}</span>
       <div
-        className="albumCard__dotsIconContainer"
+        className="albumCard"
+        onClick={handleAlbumCardClick}
       >
-        <img
-          src={dotsIcon}
-          className={getDotsIconClass()}
-          onMouseEnter={() => {setAreDotsHovered(true)}}
-          onMouseLeave={() => {setAreDotsHovered(false)}}
-          onClick={handleDotsClick}
-          alt="this is a dots icon"
+        <img 
+          src={folderIcon}
+          className="albumCard__icon"
+          alt="this is a folder icon"
         ></img>
-        {(props.id === props.displayedOptionsId) && options}
+        <span className="albumCard__name">{props.name}</span>
+        <div
+          className="albumCard__dotsIconContainer"
+        >
+          <img
+            src={dotsIcon}
+            className={getDotsIconClass()}
+            onMouseEnter={() => {setAreDotsHovered(true)}}
+            onMouseLeave={() => {setAreDotsHovered(false)}}
+            onClick={handleDotsClick}
+            alt="this is a dots icon"
+          ></img>
+          {(props.id === props.displayedOptionsId) && options}
+        </div>
       </div>
-    </div>
+    </>
   )
 }

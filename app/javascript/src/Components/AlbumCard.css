@@ -31,7 +31,7 @@
 .albumCard__options {
   position: absolute;
   bottom: -125%;
-  right: -100%;
+  left: 100%;
   background-color: white;
   width: 150px;
   display: flex;

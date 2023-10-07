@@ -16,7 +16,7 @@ import {useNavigate} from 'react-router-dom';
 
 export default function useCallAPI() {
   const [data, setData] = React.useState([]);
-  const [errors, setErrors] = React.useState([]);
+  const [fetchResults, setFetchResults] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(false);
   const [fetchParameters, setFetchParameters] = React.useState({
     url: '',
@@ -41,14 +41,78 @@ export default function useCallAPI() {
     });
   }
 
+  function deleteDataItem(id) {
+    setData(prevData => {
+      return prevData.map(item => {
+        if (item.id != id) {
+          return data;
+        }
+      });
+    });
+  }
+
   function clearData() {
     // clear data from state
     setData([]);
   }
 
-  function clearErrors() {
-    // clear errors from state
-    setErrors([]);
+  function clearFetchResults() {
+    setFetchResults([]);
+  }
+
+  function storeFetchResults(requestBody, responseStatus, parsedResponse) {
+    setFetchResults( prevData => {
+      const tempData = prevData.slice(0);
+      let body; 
+
+      if (requestBody){
+        // convert requestBody formData object to JSON
+        const obj = {};
+        requestBody.forEach((value, key) => obj[key] = value);
+        body = JSON.stringify(obj);
+      }
+
+      tempData.push({
+        responseStatus: responseStatus,
+        responseBody: parsedResponse,
+        requestBody: body
+      });
+      return tempData;
+    });
+  }
+
+  function storeData(parsedResponse) {
+    setData(prevData => {
+      const tempData = prevData.slice(0);
+      
+      if (Array.isArray(parsedResponse)) {
+        parsedResponse.forEach(item => tempData.push(item));
+      }
+      else {
+        tempData.push(parsedResponse);
+      }
+      
+      return tempData;
+    });
+  }
+
+  function updateTokens(response) {
+    // update tokens if response sends new ones
+    const accessToken = response.headers.get('access-token');
+    const clientToken = response.headers.get('client');
+    const uidToken = response.headers.get('uid');
+
+    if (accessToken) {
+      sessionStorage.setItem('access-token', accessToken);
+    }
+
+    if (clientToken) {
+      sessionStorage.setItem('client', clientToken);
+    }
+
+    if (uidToken) {
+      sessionStorage.setItem('uid', uidToken);
+    }
   }
 
   React.useEffect(() => {
@@ -72,49 +136,45 @@ export default function useCallAPI() {
         logout();
         navigate("/login", {replace: true});
       }
-      // if the response is anything else > 400, store the error message
+      // if the response is anything else > 400, store the request body and response in results
+      // and update tokens
       else if (response.status >= 400) {
-        setErrors(parsedResponse);
+        storeFetchResults(body, response.status, parsedResponse);
+        updateTokens(response);
       }
-
-      // update tokens if response sends new ones
-      const accessToken = response.headers.get('access-token');
-      const clientToken = response.headers.get('client');
-      const uidToken = response.headers.get('uid');
-
-      if (accessToken) {
-        sessionStorage.setItem('access-token', accessToken);
-      }
-
-      if (clientToken) {
-        sessionStorage.setItem('client', clientToken);
-      }
-
-      if (uidToken) {
-        sessionStorage.setItem('uid', uidToken);
-      }
-
-      // save data
-      setData(prevData => {
-        const tempData = prevData.slice(0);
+      // consider any other response codes successful.  store the request body and 
+      // response in results, and store returned body in data
+      else {
+        // store the results of the fetch
+        storeFetchResults(body, parsedResponse);
         
-        if (Array.isArray(parsedResponse)) {
-          parsedResponse.forEach(item => tempData.push(item));
+        // if successful GET or POST, append data item(s)
+        if (method === 'GET' || method === 'POST') {
+          storeData(parsedResponse);
         }
-        else {
-          tempData.push(parsedResponse);
+
+        // if successful update, replace data item
+        if (method === 'PUT' || method === 'PATCH') {
+          updateDataItem(parsedResponse);
         }
-        
-        return tempData;
-      })
+        // if successful delete, delete data item 
+        else if (method === 'DELETE') {
+          // get id from the end of the url
+          let id = parseInt(url.substring(url.lastIndexOf('/') + 1, url.length))
+          deleteDataItem(id);
+        }
+
+        // update tokens
+        updateTokens(response);
+      }
     }
 
     if (fetchParameters.url && fetchParameters.method) {
       // set loading state
       setIsLoading(true);
 
-      // clear errors
-      setErrors([]);
+      // clear results
+      setFetchResults([]);
 
       // send request(s)
       let promises = [];
@@ -142,5 +202,5 @@ export default function useCallAPI() {
 
   }, [fetchParameters, logout, navigate]);
 
-  return {data, isLoading, errors, updateDataItem, clearData, clearErrors, setFetchParameters}
+  return {data, isLoading, fetchResults, clearFetchResults, clearData, setFetchParameters}
 }

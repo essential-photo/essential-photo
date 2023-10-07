@@ -2,16 +2,33 @@ import React from 'react';
 import './AlbumForm.css';
 import ModalLayout from '../Layouts/ModalLayout';
 import xIcon from '../images/x-icon.svg';
-import {BASE_URL, POST_ALBUMS_ENDPOINT} from '../settings';
+import {
+  BASE_URL,
+  POST_ALBUMS_ENDPOINT,
+  UPDATE_ALBUMS_ENDPOINT
+} from '../settings';
 
 export default function AlbumForm(props) {
-  const [albumName, setAlbumName] = React.useState('');
+  const [albumName, setAlbumName] = React.useState(getAlbumName());
 
-  const errors = props.albumErrors.map(error => {
-    return (
-      <p className="formSubmitErrorMessage">{error}</p>
-    )
-  });
+  let errors = [];
+
+  if (props.albumFetchResults.length > 0) {
+    if (props.albumFetchResults[0].responseStatus > 400) {
+      errors = props.albumFetchResults[0].responseBody.map(errorMessage => 
+        <p className="formSubmitErrorMessage">{errorMessage}</p>
+      );
+    }
+  }
+
+  function getAlbumName() {
+    if (props.album) {
+      return props.album.name;
+    }
+    else {
+      return '';
+    }
+  }
 
   function handleChange(event) {
     setAlbumName(prevName => event.target.value);
@@ -29,19 +46,24 @@ export default function AlbumForm(props) {
     const formData = new FormData();
     formData.append('name', albumName);
     formData.append('parent_album_id', props.selectedAlbumId);
-    
-    //submit album post request to api
-    props.setAlbumFetchParameters({
-      url: `${BASE_URL}${POST_ALBUMS_ENDPOINT}`,
-      method: 'POST',
-      bodies: [formData],
-    });
-  }
 
-  // clear any previous album errors as soon as the component renders
-  React.useEffect(() => {
-    props.clearAlbumErrors();
-  }, []);
+    if (props.album) {
+      // update album
+      props.setAlbumFetchParameters({
+        url: `${BASE_URL}${UPDATE_ALBUMS_ENDPOINT}/${props.album.id}`,
+        method: 'PATCH',
+        bodies: [formData],
+      });
+    }
+    else {
+      // create new album
+      props.setAlbumFetchParameters({
+        url: `${BASE_URL}${POST_ALBUMS_ENDPOINT}`,
+        method: 'POST',
+        bodies: [formData],
+      });
+    }    
+  }
 
   return (
     <ModalLayout close={props.close}>
@@ -49,7 +71,9 @@ export default function AlbumForm(props) {
         className="albumForm"
         onClick={(event) => event.stopPropagation()}
       >
-        <h2 className="albumForm__title">New Album</h2>
+        <h2 className="albumForm__title">
+          {props.album ? 'Edit Album' : 'New Album'}
+        </h2>
         <img
           src={xIcon}
           className="albumForm__closeIcon"
@@ -77,7 +101,7 @@ export default function AlbumForm(props) {
             type="submit"
             className="button"
           >
-            Create Album
+            {props.album ? 'Update Album' : 'Create Album'}
           </button>
         </form>
       </div>

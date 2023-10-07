@@ -37,7 +37,7 @@ class Api::V1::AlbumsController < ApplicationController
                 @album.parent_album_id = params[:parent_album_id]
             end
 
-            if @album.update
+            if @album.save
                 render json: formatted_album(@album), status: :ok
             else
                 render json: @album.errors.full_messages, status: :unprocessable_entity

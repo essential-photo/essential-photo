@@ -16,11 +16,12 @@ export default function DragDrop(props) {
         setImageFetchParameters={props.setImageFetchParameters}
         clearImageData={props.clearImageData}
         setSelectedAlbumId={props.setSelectedAlbumId}
+        selectedAlbumId={props.selectedAlbumId}
         displayedOptionsId={displayedOptionsId}
         setDisplayedOptionsId={setDisplayedOptionsId}
         setAlbumFetchParameters={props.setAlbumFetchParameters}
-        albumErrors={props.albumErrors}
-        clearAlbumErrors={props.clearAlbumErrors}
+        albumFetchResults = {props.albumFetchResults}
+        clearAlbumFetchResults = {props.clearAlbumFetchResults}
       />
     )
   });
@@ -30,7 +31,7 @@ export default function DragDrop(props) {
       <AdminImageCard
         key={image.id}
         image={image}
-        updateImage={props.updateImage}
+        setImageFetchParameters={props.setImageFetchParameters}
       />
     );
   });
