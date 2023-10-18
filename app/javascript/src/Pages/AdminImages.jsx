@@ -16,28 +16,45 @@ import {
 import useCallAPI from '../CustomHooks/useCallAPI';
 
 export default function AdminImages() { 
+  const {
+    isLoading: areImagesLoading,
+    setFetchParameters: setImageFetchParameters,
+    fetchResults: imageFetchResults,
+    clearFetchResults: clearImageFetchResults
+  } = useCallAPI();
+
+  const {
+    isLoading: areAlbumsLoading,
+    setFetchParameters: setAlbumFetchParameters,
+    fetchResults: albumFetchResults,
+    clearFetchResults: clearAlbumFetchResults
+  } = useCallAPI();
+
+  const [imageData, setImageData] = React.useState([]);
+  const [albumData, setAlbumData] = React.useState([]);
   const [selectedAlbumId, setSelectedAlbumId] = React.useState(null);
   const [isAlbumFormDisplayed, setIsAlbumFormDisplayed] = React.useState(false);
 
-  const {
-    data: imageData,
-    isLoading: areImagesLoading,
-    clearData: clearImageData,
-    setFetchParameters: setImageFetchParameters,
-    fetchResults: imageFetchResults,
-    clearFetchResults: clearImageFetchResults,
-  } = useCallAPI();
-
-  const {
-    data: albumData,
-    isLoading: areAlbumsLoading,
-    fetchResults: albumFetchResults,
-    clearFetchResults: clearAlbumFetchResults,
-    setFetchParameters: setAlbumFetchParameters,
-  } = useCallAPI();
-
   const fileInputEl = React.useRef(null);
   const childAlbums = getChildAlbums(selectedAlbumId);
+
+  function clearImageData() {
+    setImageData([]);
+  }
+
+  function updateImageData(imageData) {
+    // manually update object in data array
+    setImageData(prevData => {
+      return prevData.map(item => {
+        if (item.id === data.id) {
+          return data;
+        }
+        else {
+          return item;
+        }
+      });
+    });
+  }
 
   function getChildAlbums(albumId) {
     return albumData.filter(album => album.parent_album_id === albumId);
@@ -99,6 +116,7 @@ export default function AdminImages() {
   }
 
   useEffect(() => {
+    // load images belonging to selected album when the selected album changes
     setImageFetchParameters({
       url: `${BASE_URL}${IMAGES_INDEX_ENDPOINT_BY_ALBUM_PUBLIC_IMAGES_ONLY}${selectedAlbumId}`,
       method: 'GET',
@@ -107,6 +125,7 @@ export default function AdminImages() {
   }, [setImageFetchParameters, selectedAlbumId]);
 
   useEffect(() => {
+    // get all the albums when the component first renders
     setAlbumFetchParameters({
       url: `${BASE_URL}${ALBUMS_INDEX_ENDPOINT}`,
       method: 'GET',
@@ -114,23 +133,32 @@ export default function AdminImages() {
     })
   }, [setAlbumFetchParameters]);
 
-  // clear image fetch results
   useEffect(() => {
+    // after the image fetch finishes, store the image(s) in state
     if (imageFetchResults.length > 0) {
-      console.log('AdminImages: clearing image fetch results');
+      const response = imageFetchResults[0].responseBody;
+      setImageData(prevData => {
+        const tempData = prevData.slice(0);
+
+        if (Array.isArray(response)) {
+          response.forEach(item => tempData.push(item));
+        }
+        else {
+          tempData.push(response);
+        }
+
+        return tempData;
+      })
       clearImageFetchResults();
     }
   }, [imageFetchResults])
 
-  // clear album fetch results
   useEffect(() => {
+    // after the album fetch finishes, store the albums in state
     if (albumFetchResults.length > 0) {
-      console.log('AdminImages: clearing album fetch results');
-      clearAlbumFetchResults();
+      setAlbumData(albumFetchResults[0].responseBody);
     }
   }, [albumFetchResults])
-
-  console.log('AdminImages rendered');
 
   return (
     <>
@@ -160,6 +188,7 @@ export default function AdminImages() {
                   setAlbumFetchParameters = {setAlbumFetchParameters}
                   selectedAlbumId = {selectedAlbumId}
                   albumFetchResults = {albumFetchResults}
+                  albumFetchParameters = {albumFetchParameters}
                   clearAlbumFetchResults = {clearAlbumFetchResults}
                   album={null}
                 />
@@ -182,6 +211,7 @@ export default function AdminImages() {
           </header>
           <DragDrop
             imageData={imageData}
+            updateImageData={updateImageData}
             areImagesLoading={areImagesLoading}
             setImageFetchParameters={setImageFetchParameters}
             clearImageData={clearImageData}

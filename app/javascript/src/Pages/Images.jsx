@@ -10,8 +10,16 @@ import {
 } from '../settings';
 
 export default function Images() {
-  const {data: imageData, clearData: clearImageData, setFetchParameters: setImageFetchParameters} = useCallAPI();
-  const {data: albumData, setFetchParameters: setAlbumFetchParameters} = useCallAPI();
+  const {
+    setFetchParameters: setImageFetchParameters,
+    fetchResults: imageFetchResults
+  } = useCallAPI();
+  const {
+    setFetchParameters: setAlbumFetchParameters,
+    fetchResults: albumFetchResults
+  } = useCallAPI();
+  const [imageData, setImageData] = React.useState([]);
+  const [albumData, setAlbumData] = React.useState([]);
   const [displayedImage, setDisplayedImage] = React.useState(null);
   const [imageFilterText, setImageFilterText] = React.useState('');
 
@@ -40,6 +48,10 @@ export default function Images() {
 
   function closeDisplayedImage() {
     setDisplayedImage(null);
+  }
+
+  function clearImageData() {
+    setImageData([]);
   }
 
   function setPreviousImage() {
@@ -93,9 +105,23 @@ export default function Images() {
     });
   }, [setImageFetchParameters, setAlbumFetchParameters]);
 
+  useEffect(() => {
+    // after the image fetch finishes, store the images in state
+    if (imageFetchResults.length > 0) {
+      setImageData(imageFetchResults[0].responseBody);
+    }
+  }, [imageFetchResults])
+
+  useEffect(() => {
+    // after the album fetch finishes, store the albums in state
+    if (albumFetchResults.length > 0) {
+      setAlbumData(albumFetchResults[0].responseBody);
+    }
+  }, [albumFetchResults])
+
   return (
     <VisitorLayout
-      clearImageData={clearImageData}
+      clearImageData = {clearImageData}
       setImageFetchParameters={setImageFetchParameters}
       albumData = {albumData}
       setImageFilterText={setImageFilterText}

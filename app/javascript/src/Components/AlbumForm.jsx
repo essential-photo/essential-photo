@@ -54,6 +54,7 @@ export default function AlbumForm(props) {
         url: `${BASE_URL}${UPDATE_ALBUMS_ENDPOINT}/${props.album.id}`,
         method: 'PATCH',
         bodies: [formData],
+        initiatingComponentName: 'AlbumForm'
       });
     }
     else {
@@ -62,6 +63,7 @@ export default function AlbumForm(props) {
         url: `${BASE_URL}${POST_ALBUMS_ENDPOINT}`,
         method: 'POST',
         bodies: [formData],
+        initiatingComponentName: 'AlbumForm'
       });
     }    
   }
