@@ -27,6 +27,7 @@ export default function NavigationElement(props) {
         getAlbumName={props.getAlbumName}
         getAlbumDepth={props.getAlbumDepth}
         clearImageData={props.clearImageData}
+        addImageData={props.addImageData}
         setImageFilterText={props.setImageFilterText}
         setIsNavDisplayed={props.setIsNavDisplayed}
       />
