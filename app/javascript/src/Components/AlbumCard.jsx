@@ -4,7 +4,6 @@ import folderIcon from '../images/folder-icon.svg';
 import dotsIcon from '../images/dots-icon.svg';
 import AlbumForm from './AlbumForm';
 import Confirmation from './Confirmation';
-import {BASE_URL, DELETE_ALBUMS_ENDPOINT} from '../settings';
 
 export default function AlbumCard(props) {
   const [isAlbumClicked, setIsAlbumClicked] = React.useState(false);
@@ -92,9 +91,8 @@ export default function AlbumCard(props) {
      {isAlbumFormDisplayed &&
         <AlbumForm 
           close={() => setIsAlbumFormDisplayed(false)}
-          setAlbumFetchParameters = {props.setAlbumFetchParameters}
-          albumFetchResults = {props.albumFetchResults}
-          clearAlbumFetchResults = {props.clearAlbumFetchResults}
+          addAlbumData = {props.addAlbumData}
+          updateAlbumData = {props.updateAlbumData}
           selectedAlbumId = {props.selectedAlbumId}
           album = {{
             id: props.id,
@@ -104,13 +102,9 @@ export default function AlbumCard(props) {
       }
       {isConfirmationDisplayed &&
         <Confirmation 
-          setFetchParameters={props.setAlbumFetchParameters}
-          fetchResults={props.albumFetchResults}
-          clearFetchResults={props.clearAlbumFetchResults}
           close={() => setIsConfirmationDisplayed(false)}
-          url={`${BASE_URL}${DELETE_ALBUMS_ENDPOINT}/${props.id}`}
-          method='DELETE'
-          bodies={[]}
+          deleteAlbumData={props.deleteAlbumData}
+          id={props.id}
         />
       }
       <div

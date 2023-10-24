@@ -24,7 +24,7 @@ export default function AdminImageCard(props) {
         <EditImage
           image={props.image}
           close={closeEditImage}
-          setImageFetchParameters={props.setImageFetchParameters}
+          updateImageData={props.updateImageData}
         />
       }
       <div className="adminImageCard">

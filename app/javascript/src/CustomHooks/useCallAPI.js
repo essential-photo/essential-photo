@@ -30,7 +30,7 @@ export default function useCallAPI() {
     setFetchResults([]);
   }
 
-  function storeFetchResults(requestBody, responseStatus, parsedResponse) {
+  function storeFetchResults(requestURL, requestMethod, requestBody, responseStatus, parsedResponse) {
     setFetchResults( prevData => {
       const tempData = prevData.slice(0);
       let body; 
@@ -45,7 +45,9 @@ export default function useCallAPI() {
       tempData.push({
         responseStatus: responseStatus,
         responseBody: parsedResponse,
-        requestBody: body
+        requestBody: body,
+        requestURL: requestURL,
+        requestMethod: requestMethod
       });
       return tempData;
     });
@@ -94,7 +96,7 @@ export default function useCallAPI() {
       // otherwise, store the results of the fetch and update tokens
       else {
         // store the results of the fetch
-        storeFetchResults(body, response.status, parsedResponse);
+        storeFetchResults(url, method, body, response.status, parsedResponse);
         
         // update tokens
         updateTokens(response);

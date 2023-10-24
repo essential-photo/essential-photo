@@ -9,7 +9,7 @@ export default function Navigation(props) {
 				name='Albums'
 				albumData={props.albumData}
 				clearImageData={props.clearImageData}
-				setImageFetchParameters={props.setImageFetchParameters}
+				addImageData={props.addImageData}
 				setImageFilterText={props.setImageFilterText}
 				setIsNavDisplayed={props.setIsNavDisplayed}
 				isDesktopScreen={props.isDesktopScreen}

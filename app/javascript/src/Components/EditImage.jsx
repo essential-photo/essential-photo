@@ -3,8 +3,16 @@ import './EditImage.css';
 import ModalLayout from '../Layouts/ModalLayout';
 import xIcon from '../images/x-icon.svg';
 import {BASE_URL, UPDATE_IMAGE_ENDPOINT} from '../settings';
+import useCallAPI from '../CustomHooks/useCallAPI';
 
 export default function EditImage(props) {
+  const {
+    isLoading: areImagesLoading,
+    setFetchParameters: setImageFetchParameters,
+    fetchResults: imageFetchResults,
+    clearFetchResults: clearImageFetchResults
+  } = useCallAPI();
+
   const [imageFormData, setImageFormData] = React.useState({
     title: props.image.title,
     description: props.image.description,
@@ -32,19 +40,29 @@ export default function EditImage(props) {
     formData.append('description', imageFormData.description);
     formData.append('tags', imageFormData.tags);
     formData.append('is_public', imageFormData.isPublic);
+    formData.append('parent_album_id', props.image.parent_album_id);
     
     //submit image update request to api
-    props.setImageFetchParameters({
+    setImageFetchParameters({
       url: `${BASE_URL}${UPDATE_IMAGE_ENDPOINT}/${props.image.id}`,
       method: 'PATCH',
       bodies: [formData],
     });
   }
+
+  useEffect(() => {
+    // after the image fetch finishes, update the image in state
+    if (imageFetchResults.length > 0) {
+      const response = imageFetchResults[0].responseBody;
+      props.updateImageData(response);
+      clearImageFetchResults();
+    }
+  }, [imageFetchResults])
   
   return (
     <ModalLayout close={props.close} dark={true}>
       <main className="editImage">
-        {props.isLoading &&
+        {areImagesLoading &&
           <div className="editImage__overlay">
             <h1>Loading...</h1>
           </div>

@@ -1,5 +1,5 @@
 class Api::V1::AlbumsController < ApplicationController
-    #before_action :authenticate_api_v1_admin!, except: :index
+    before_action :authenticate_api_v1_admin!, except: :index
 
     def index
         @albums = Album.all

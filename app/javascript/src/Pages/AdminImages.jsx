@@ -42,9 +42,23 @@ export default function AdminImages() {
     setImageData([]);
   }
 
-  function updateImageData(imageData) {
+  function updateImageData(data) {
     // manually update object in data array
     setImageData(prevData => {
+      return prevData.map(item => {
+        if (item.id === data.id) {
+          return data;
+        }
+        else {
+          return item;
+        }
+      });
+    });
+  }
+
+  function updateAlbumData(data) {
+    // manually update object in data array
+    setAlbumData(prevData => {
       return prevData.map(item => {
         if (item.id === data.id) {
           return data;
@@ -115,6 +129,41 @@ export default function AdminImages() {
     event.target.value = null;
   }
 
+  function addImageData(data) {
+    setImageData(prevData => {
+      const tempData = prevData.slice(0);
+
+      if (Array.isArray(data)) {
+        data.forEach(item => tempData.push(item));
+      }
+      else {
+        tempData.push(data);
+      }
+
+      return tempData;
+    })
+  }
+
+  function addAlbumData(data) {
+    setAlbumData(prevData => {
+      const tempData = prevData.slice(0);
+
+      if (Array.isArray(data)) {
+        data.forEach(item => tempData.push(item));
+      }
+      else {
+        tempData.push(data);
+      }
+
+      return tempData;
+    })
+  }
+
+  function deleteAlbumData(id) {
+    // manually delete object in data array
+    setAlbumData(prevData => prevData.filter(item => item.id != id));
+  }
+
   useEffect(() => {
     // load images belonging to selected album when the selected album changes
     setImageFetchParameters({
@@ -137,18 +186,7 @@ export default function AdminImages() {
     // after the image fetch finishes, store the image(s) in state
     if (imageFetchResults.length > 0) {
       const response = imageFetchResults[0].responseBody;
-      setImageData(prevData => {
-        const tempData = prevData.slice(0);
-
-        if (Array.isArray(response)) {
-          response.forEach(item => tempData.push(item));
-        }
-        else {
-          tempData.push(response);
-        }
-
-        return tempData;
-      })
+      addImageData(response);
       clearImageFetchResults();
     }
   }, [imageFetchResults])
@@ -156,7 +194,7 @@ export default function AdminImages() {
   useEffect(() => {
     // after the album fetch finishes, store the albums in state
     if (albumFetchResults.length > 0) {
-      setAlbumData(albumFetchResults[0].responseBody);
+      addAlbumData(albumFetchResults[0].responseBody);
     }
   }, [albumFetchResults])
 
@@ -185,11 +223,8 @@ export default function AdminImages() {
               { isAlbumFormDisplayed &&
                 <AlbumForm 
                   close={() => setIsAlbumFormDisplayed(false)}
-                  setAlbumFetchParameters = {setAlbumFetchParameters}
                   selectedAlbumId = {selectedAlbumId}
-                  albumFetchResults = {albumFetchResults}
-                  albumFetchParameters = {albumFetchParameters}
-                  clearAlbumFetchResults = {clearAlbumFetchResults}
+                  addAlbumData = {addAlbumData}
                   album={null}
                 />
               }
@@ -211,17 +246,17 @@ export default function AdminImages() {
           </header>
           <DragDrop
             imageData={imageData}
+            addImageData={addImageData}
             updateImageData={updateImageData}
+            addAlbumData={addAlbumData}
+            updateAlbumData={updateAlbumData}
+            deleteAlbumData={deleteAlbumData}
             areImagesLoading={areImagesLoading}
-            setImageFetchParameters={setImageFetchParameters}
             clearImageData={clearImageData}
             areAlbumsLoading={areAlbumsLoading}
             childAlbums={childAlbums}
             setSelectedAlbumId={setSelectedAlbumId}
             selectedAlbumId={selectedAlbumId}
-            setAlbumFetchParameters = {setAlbumFetchParameters}
-            albumFetchResults = {albumFetchResults}
-            clearAlbumFetchResults = {clearAlbumFetchResults}
           />
         </main>
       </AdminLayout>

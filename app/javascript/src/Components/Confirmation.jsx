@@ -2,27 +2,35 @@ import React from 'react';
 import './Confirmation.css';
 import ModalLayout from '../Layouts/ModalLayout';
 import xIcon from '../images/x-icon.svg';
+import {BASE_URL, DELETE_ALBUMS_ENDPOINT} from '../settings';
+import useCallAPI from '../CustomHooks/useCallAPI';
+import { checkPropTypes } from 'prop-types';
 
 export default function Confirmation(props) {
   let errors = [];
 
+  const {
+    setFetchParameters: setAlbumFetchParameters,
+    fetchResults: albumFetchResults,
+    clearFetchResults: clearAlbumFetchResults
+  } = useCallAPI();
+
   function handleYesClick(event) {
-    props.setFetchParameters({
-      url: props.url,
-      method: props.method,
-      bodies: props.bodies
+    setAlbumFetchParameters({
+      url: `${BASE_URL}${DELETE_ALBUMS_ENDPOINT}/${props.id}`,
+      method: 'DELETE',
+      bodies: []
     })
   }
 
-  // if fetch goes through with a 200 code,
-  // then close the confirmation, else
-  // display the error message
-  if (props.fetchResults.length > 0) {
-    if (props.fetchResults[0].responseStatus === 200) {
+  // handle fetch response
+  if (albumFetchResults.length > 0) {
+    if (albumFetchResults[0].responseStatus === 200) {
+      props.deleteAlbumData(props.id);
       props.close();
     }
     else {
-      errors = props.fetchResults[0].responseBody.map(errorMessage =>
+      errors = fetchResults[0].responseBody.map(errorMessage =>
         <p className="formSubmitErrorMessage">{errorMessage}</p>
       );
     }
@@ -31,12 +39,10 @@ export default function Confirmation(props) {
   // clear any fetch results when the component
   // first renders
   React.useEffect(() => {
-    if (props.fetchResults.length > 0) {
-      props.clearFetchResults();
+    if (albumFetchResults.length > 0) {
+      clearAlbumFetchResults();
     }
-  }, [props.fetchResults])
-
-  console.log('Confirmation rendered');
+  }, [])
 
   return (
     <ModalLayout close={props.close}>

@@ -4,6 +4,7 @@ import plusIconLarge from '../images/plus-icon-large.svg';
 import minusIconLarge from '../images/minus-icon-large.svg';
 import Navigation from './Navigation';
 import {DOMAIN_NAME, BASE_URL, IMAGES_INDEX_ENDPOINT_PUBLIC_IMAGES_ONLY} from '../settings';
+import useCallAPI from '../CustomHooks/useCallAPI';
 
 export default function VisitorHeader(props) {
   const [searchText, setSearchText] = React.useState('');
@@ -11,11 +12,17 @@ export default function VisitorHeader(props) {
   const [isNavDisplayed, setIsNavDisplayed] = React.useState(false);
   const [isDesktopScreen, setIsDesktopScreen] = React.useState(null);
 
+  const {
+    setFetchParameters: setImageFetchParameters,
+    fetchResults: imageFetchResults,
+    clearFetchResults: clearImageFetchResults
+  } = useCallAPI();
+
   const navigation = (
     <Navigation
       clearImageData={props.clearImageData}
+      addImageData={props.addImageData}
       albumData={props.albumData}
-      setImageFetchParameters={props.setImageFetchParameters}
       setImageFilterText={props.setImageFilterText}
       setIsNavDisplayed={setIsNavDisplayed}
       isDesktopScreen={isDesktopScreen}
@@ -50,7 +57,7 @@ export default function VisitorHeader(props) {
       }
 
       // submit GET request to API
-      props.setImageFetchParameters({
+      setImageFetchParameters({
         url: url,
         method: 'GET',
         bodies: [],
@@ -59,6 +66,15 @@ export default function VisitorHeader(props) {
 
     setIsFormSubmitted(false);
   }, [isFormSubmitted])
+
+  React.useEffect(() => {
+    // after the image fetch finishes, store the image(s) in state
+    if (imageFetchResults.length > 0) {
+      const response = imageFetchResults[0].responseBody;
+      props.addImageData(response);
+      clearImageFetchResults();
+    }
+  }, [imageFetchResults]);
 
   React.useEffect(() => {
     function determineIfDesktopScreen(width) {

@@ -1,27 +1,35 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './DragDrop.css';
 import AdminImageCard from './AdminImageCard';
 import AlbumCard from './AlbumCard';
 import {BASE_URL, POST_IMAGES_ENDPOINT} from '../settings';
 import {VALID_UPLOAD_FILE_TYPES} from '../settings';
+import useCallAPI from '../CustomHooks/useCallAPI';
 
 export default function DragDrop(props) {
   const [displayedOptionsId, setDisplayedOptionsId] = React.useState(null);
+
+  const {
+    isLoading: areImagesLoading,
+    setFetchParameters: setImageFetchParameters,
+    fetchResults: imageFetchResults,
+    clearFetchResults: clearImageFetchResults
+  } = useCallAPI();
 
   const albums = props.childAlbums.map(childAlbum => {
     return (
       <AlbumCard
         id={childAlbum.id}
         name={childAlbum.name}
-        setImageFetchParameters={props.setImageFetchParameters}
         clearImageData={props.clearImageData}
+        updateImageData={props.updateImageData}
+        updateAlbumData={props.updateAlbumData}
+        deleteAlbumData={props.deleteAlbumData}
+        addAlbumData={props.addAlbumData}
         setSelectedAlbumId={props.setSelectedAlbumId}
         selectedAlbumId={props.selectedAlbumId}
         displayedOptionsId={displayedOptionsId}
         setDisplayedOptionsId={setDisplayedOptionsId}
-        setAlbumFetchParameters={props.setAlbumFetchParameters}
-        albumFetchResults = {props.albumFetchResults}
-        clearAlbumFetchResults = {props.clearAlbumFetchResults}
       />
     )
   });
@@ -31,7 +39,7 @@ export default function DragDrop(props) {
       <AdminImageCard
         key={image.id}
         image={image}
-        setImageFetchParameters={props.setImageFetchParameters}
+        updateImageData={props.updateImageData}
       />
     );
   });
@@ -66,12 +74,21 @@ export default function DragDrop(props) {
     });
 
     // initiate file upload
-    props.setImageFetchParameters({
+    setImageFetchParameters({
       url: `${BASE_URL}${POST_IMAGES_ENDPOINT}`,
       method: 'POST',
       bodies: formDatas,
     });
   }
+
+  useEffect(() => {
+    // after the image fetch finishes, store the image(s) in state
+    if (imageFetchResults.length > 0) {
+      const response = imageFetchResults[0].responseBody;
+      props.addImageData(response);
+      clearImageFetchResults();
+    }
+  }, [imageFetchResults])
 
   return (
     <div className="dragDrop">
@@ -97,7 +114,7 @@ export default function DragDrop(props) {
             <p>No images yet</p>
           }
         </div>
-        {(props.areImagesLoading || props.areAlbumsLoading) &&
+        {(areImagesLoading || props.areImagesLoading || props.areAlbumsLoading) &&
           <div className="dragDrop__overlay">
             <h1>Loading...</h1>
           </div>

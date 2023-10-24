@@ -7,10 +7,17 @@ import {
   IMAGES_INDEX_ENDPOINT_PUBLIC_IMAGES_ONLY,
   IMAGES_INDEX_ENDPOINT_BY_ALBUM_PUBLIC_IMAGES_ONLY
 } from '../settings';
+import useCallAPI from '../CustomHooks/useCallAPI';
 
 export default function NavigationElement(props) {
   const [areChildAlbumsDisplayed, setAreChildAlbumsDisplayed] = React.useState(false);
   const [isAlbumNameClicked, setIsAlbumNameClicked] = React.useState(false);
+
+  const {
+    setFetchParameters: setImageFetchParameters,
+    fetchResults: imageFetchResults,
+    clearFetchResults: clearImageFetchResults
+  } = useCallAPI();
 
   const childAlbums = props.getChildAlbums(props.id).map(childAlbum => {
     return (
@@ -20,7 +27,6 @@ export default function NavigationElement(props) {
         getAlbumName={props.getAlbumName}
         getAlbumDepth={props.getAlbumDepth}
         clearImageData={props.clearImageData}
-				setImageFetchParameters={props.setImageFetchParameters}
         setImageFilterText={props.setImageFilterText}
         setIsNavDisplayed={props.setIsNavDisplayed}
       />
@@ -63,7 +69,7 @@ export default function NavigationElement(props) {
       }
 
       // send image fetch request
-      props.setImageFetchParameters({
+      setImageFetchParameters({
         url: url,
         method: 'GET',
         bodies: [],
@@ -75,6 +81,15 @@ export default function NavigationElement(props) {
 
     setIsAlbumNameClicked(false);
   }, [isAlbumNameClicked])
+
+  React.useEffect(() => {
+    // after the image fetch finishes, store the image(s) in state
+    if (imageFetchResults.length > 0) {
+      const response = imageFetchResults[0].responseBody;
+      props.addImageData(response);
+      clearImageFetchResults();
+    }
+  }, [imageFetchResults]);
 
   return (
     <>

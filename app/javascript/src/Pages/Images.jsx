@@ -54,6 +54,21 @@ export default function Images() {
     setImageData([]);
   }
 
+  function addImageData(data) {
+    setImageData(prevData => {
+      const tempData = prevData.slice(0);
+
+      if (Array.isArray(data)) {
+        data.forEach(item => tempData.push(item));
+      }
+      else {
+        tempData.push(data);
+      }
+
+      return tempData;
+    })
+  }
+
   function setPreviousImage() {
     // set the displayed image to the previous
     // image in the imageData array
@@ -108,7 +123,7 @@ export default function Images() {
   useEffect(() => {
     // after the image fetch finishes, store the images in state
     if (imageFetchResults.length > 0) {
-      setImageData(imageFetchResults[0].responseBody);
+      addImageData(imageFetchResults[0].responseBody);
     }
   }, [imageFetchResults])
 
@@ -122,7 +137,7 @@ export default function Images() {
   return (
     <VisitorLayout
       clearImageData = {clearImageData}
-      setImageFetchParameters={setImageFetchParameters}
+      addImageData = {addImageData}
       albumData = {albumData}
       setImageFilterText={setImageFilterText}
     >
