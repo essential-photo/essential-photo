@@ -20,6 +20,19 @@ export default function EditImage(props) {
     isPublic: props.image.is_public,
   })
 
+  // when component first renders, clear fetch results
+  useEffect(() => {
+    clearImageFetchResults();    
+  }, [])
+
+  // handle fetch response
+  if (imageFetchResults.length > 0) {
+    if (imageFetchResults[0].responseStatus === 200) {
+      props.updateImageData(imageFetchResults[0].responseBody);
+      clearImageFetchResults();
+    }
+  }
+
   function handleChange(event) {
     setImageFormData(prevData => {
       if (event.target.id === 'isPublic') {
@@ -49,15 +62,6 @@ export default function EditImage(props) {
       bodies: [formData],
     });
   }
-
-  useEffect(() => {
-    // after the image fetch finishes, update the image in state
-    if (imageFetchResults.length > 0) {
-      const response = imageFetchResults[0].responseBody;
-      props.updateImageData(response);
-      clearImageFetchResults();
-    }
-  }, [imageFetchResults])
   
   return (
     <ModalLayout close={props.close} dark={true}>

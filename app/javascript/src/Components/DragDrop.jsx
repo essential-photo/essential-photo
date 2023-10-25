@@ -16,6 +16,20 @@ export default function DragDrop(props) {
     clearFetchResults: clearImageFetchResults
   } = useCallAPI();
 
+  // on initial component render, clear fetch results
+  useEffect(() => {
+    if (imageFetchResults.length > 0) {
+      clearImageFetchResults();
+    }
+  }, [])
+
+  // handle fetch results
+  if (imageFetchResults.length > 0) {
+    const response = imageFetchResults[0].responseBody;
+    props.addImageData(response);
+    clearImageFetchResults();
+  }
+
   const albums = props.childAlbums.map(childAlbum => {
     return (
       <AlbumCard
@@ -80,15 +94,6 @@ export default function DragDrop(props) {
       bodies: formDatas,
     });
   }
-
-  useEffect(() => {
-    // after the image fetch finishes, store the image(s) in state
-    if (imageFetchResults.length > 0) {
-      const response = imageFetchResults[0].responseBody;
-      props.addImageData(response);
-      clearImageFetchResults();
-    }
-  }, [imageFetchResults])
 
   return (
     <div className="dragDrop">

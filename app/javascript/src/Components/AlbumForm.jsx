@@ -19,10 +19,26 @@ export default function AlbumForm(props) {
     clearFetchResults: clearAlbumFetchResults
   } = useCallAPI();
 
+  // on initial component render, clear any fetch results
+  React.useEffect(() => {
+    if (albumFetchResults.length > 0) {
+      clearAlbumFetchResults();
+    }
+  }, [])
+
   let errors = [];
 
+  // handle fetch results
   if (albumFetchResults.length > 0) {
-    if (albumFetchResults[0].responseStatus > 400) {
+    if (albumFetchResults[0].requestMethod === 'PATCH' && albumFetchResults[0].responseStatus === 200) {
+      props.updateAlbumData(albumFetchResults[0].responseBody);
+      clearAlbumFetchResults();
+    }
+    else if (albumFetchResults[0].requestMethod === 'POST' && albumFetchResults[0].responseStatus === 201) {
+      props.addAlbumData(albumFetchResults[0].responseBody);
+      clearAlbumFetchResults();
+    }
+    else if (albumFetchResults[0].responseStatus > 400) {
       errors = albumFetchResults[0].responseBody.map(errorMessage => 
         <p className="formSubmitErrorMessage">{errorMessage}</p>
       );
@@ -74,27 +90,6 @@ export default function AlbumForm(props) {
       });
     }    
   }
-
-  // when component first renders, clear any fetch results
-  React.useEffect(() => {
-    if (albumFetchResults.length > 0) {
-      clearAlbumFetchResults();
-    }
-  }, [])
-
-  // handle successful album fetch response
-  React.useEffect(() => {
-    if (albumFetchResults.length > 0) {
-      if (albumFetchResults[0].requestMethod === 'PATCH' && albumFetchResults[0].responseStatus === 200) {
-        props.updateAlbumData(albumFetchResults[0].responseBody);
-        clearAlbumFetchResults(albumFetchResults);
-      }
-      else if (albumFetchResults[0].requestMethod === 'POST' && albumFetchResults[0].responseStatus === 201) {
-        props.addAlbumData(albumFetchResults[0].responseBody);
-        clearAlbumFetchResults(albumFetchResults);
-      }
-    }
-  }, [albumFetchResults])
 
   return (
     <ModalLayout close={props.close}>

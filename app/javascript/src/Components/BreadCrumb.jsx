@@ -27,6 +27,7 @@ export default function BreadCrumb(props) {
     // from what's currently displayed
     if (props.selectedAlbumId != albumId) {
       props.clearImageData();
+      props.clearAlbumData();
       props.setSelectedAlbumId(albumId);
     }
   }

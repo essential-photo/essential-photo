@@ -38,8 +38,49 @@ export default function AdminImages() {
   const fileInputEl = React.useRef(null);
   const childAlbums = getChildAlbums(selectedAlbumId);
 
+  // when the component renders initially, clear any fetchResults,
+  useEffect(() => {
+    clearAlbumFetchResults();
+    clearImageFetchResults();
+  }, []);
+
+  // load images/albums belonging to selected album when the selected album changes
+  useEffect(() => {
+    setAlbumFetchParameters({
+      url: `${BASE_URL}${ALBUMS_INDEX_ENDPOINT}`,
+      method: 'GET',
+      bodies: [],
+    })
+
+    setImageFetchParameters({
+      url: `${BASE_URL}${IMAGES_INDEX_ENDPOINT_BY_ALBUM_PUBLIC_IMAGES_ONLY}${selectedAlbumId}`,
+      method: 'GET',
+      bodies: [],
+    });
+  }, [selectedAlbumId]);
+
+  // handle image fetch results
+  if (imageFetchResults.length > 0) {
+    if (imageFetchResults[0].responseStatus === 200 || imageFetchResults[0].responseStatus === 201) {
+      addImageData(imageFetchResults[0].responseBody);
+      clearImageFetchResults();
+    }
+  }
+
+  // handle album fetch results
+  if (albumFetchResults.length > 0) {
+    if (albumFetchResults[0].responseStatus === 200) {
+      addAlbumData(albumFetchResults[0].responseBody);
+      clearAlbumFetchResults();
+    }
+  }
+
   function clearImageData() {
     setImageData([]);
+  }
+
+  function clearAlbumData() {
+    setAlbumData([]);
   }
 
   function updateImageData(data) {
@@ -164,40 +205,6 @@ export default function AdminImages() {
     setAlbumData(prevData => prevData.filter(item => item.id != id));
   }
 
-  useEffect(() => {
-    // load images belonging to selected album when the selected album changes
-    setImageFetchParameters({
-      url: `${BASE_URL}${IMAGES_INDEX_ENDPOINT_BY_ALBUM_PUBLIC_IMAGES_ONLY}${selectedAlbumId}`,
-      method: 'GET',
-      bodies: [],
-    });
-  }, [setImageFetchParameters, selectedAlbumId]);
-
-  useEffect(() => {
-    // get all the albums when the component first renders
-    setAlbumFetchParameters({
-      url: `${BASE_URL}${ALBUMS_INDEX_ENDPOINT}`,
-      method: 'GET',
-      bodies: [],
-    })
-  }, [setAlbumFetchParameters]);
-
-  useEffect(() => {
-    // after the image fetch finishes, store the image(s) in state
-    if (imageFetchResults.length > 0) {
-      const response = imageFetchResults[0].responseBody;
-      addImageData(response);
-      clearImageFetchResults();
-    }
-  }, [imageFetchResults])
-
-  useEffect(() => {
-    // after the album fetch finishes, store the albums in state
-    if (albumFetchResults.length > 0) {
-      addAlbumData(albumFetchResults[0].responseBody);
-    }
-  }, [albumFetchResults])
-
   return (
     <>
       <AdminLayout hasHeader={true}>
@@ -235,6 +242,7 @@ export default function AdminImages() {
                 setSelectedAlbumId={setSelectedAlbumId}
                 getAlbumPath={getAlbumPath}
                 clearImageData={clearImageData}
+                clearAlbumData={clearAlbumData}
               />
               { selectedAlbumId &&
                 <div className="adminImages__back" onClick={handleBackClick}>

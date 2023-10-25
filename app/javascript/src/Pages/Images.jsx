@@ -12,16 +12,55 @@ import {
 export default function Images() {
   const {
     setFetchParameters: setImageFetchParameters,
-    fetchResults: imageFetchResults
+    fetchResults: imageFetchResults,
+    clearFetchResults: clearImageFetchResults
   } = useCallAPI();
+
   const {
     setFetchParameters: setAlbumFetchParameters,
-    fetchResults: albumFetchResults
+    fetchResults: albumFetchResults,
+    clearFetchResults: clearAlbumFetchResults
   } = useCallAPI();
+
   const [imageData, setImageData] = React.useState([]);
   const [albumData, setAlbumData] = React.useState([]);
   const [displayedImage, setDisplayedImage] = React.useState(null);
   const [imageFilterText, setImageFilterText] = React.useState('');
+
+  // when component first renders, clear any fetch results
+  // and fetch images and albums
+  useEffect(() => {
+    clearImageFetchResults();
+    clearAlbumFetchResults();
+
+    setImageFetchParameters({
+      url: `${BASE_URL}${IMAGES_INDEX_ENDPOINT_PUBLIC_IMAGES_ONLY}`,
+      method: 'GET',
+      bodies: [],
+    });
+
+    setAlbumFetchParameters({
+      url: `${BASE_URL}${ALBUMS_INDEX_ENDPOINT}`,
+      method: 'GET',
+      bodies: [],
+    });
+  }, []);
+
+  // handle image fetch results
+  if (imageFetchResults.length > 0) {
+    if (imageFetchResults[0].responseStatus === 200) {
+      addImageData(imageFetchResults[0].responseBody);
+      clearImageFetchResults();
+    }
+  }
+
+  // handle album fetch results
+  if (albumFetchResults.length > 0) {
+    if (albumFetchResults[0].responseStatus === 200) {
+      setAlbumData(albumFetchResults[0].responseBody);
+      clearAlbumFetchResults();
+    }
+  }
 
   const images = imageData.map(image => {
     return (
@@ -104,35 +143,6 @@ export default function Images() {
     
     setDisplayedImage(nextImage);
   }
-
-  useEffect(() => {
-    // on initial page load, fetch photos and albums
-    setImageFetchParameters({
-      url: `${BASE_URL}${IMAGES_INDEX_ENDPOINT_PUBLIC_IMAGES_ONLY}`,
-      method: 'GET',
-      bodies: [],
-    });
-
-    setAlbumFetchParameters({
-      url: `${BASE_URL}${ALBUMS_INDEX_ENDPOINT}`,
-      method: 'GET',
-      bodies: [],
-    });
-  }, [setImageFetchParameters, setAlbumFetchParameters]);
-
-  useEffect(() => {
-    // after the image fetch finishes, store the images in state
-    if (imageFetchResults.length > 0) {
-      addImageData(imageFetchResults[0].responseBody);
-    }
-  }, [imageFetchResults])
-
-  useEffect(() => {
-    // after the album fetch finishes, store the albums in state
-    if (albumFetchResults.length > 0) {
-      setAlbumData(albumFetchResults[0].responseBody);
-    }
-  }, [albumFetchResults])
 
   return (
     <VisitorLayout

@@ -19,6 +19,21 @@ export default function NavigationElement(props) {
     clearFetchResults: clearImageFetchResults
   } = useCallAPI();
 
+  // when component first renders, clear fetch results
+  React.useEffect(() => {
+    if (imageFetchResults.length > 0) {
+      clearImageFetchResults();
+    }
+  }, []);
+
+  // handle fetch results
+  if (imageFetchResults.length > 0) {
+    if (imageFetchResults[0].responseStatus === 200) {
+      props.addImageData(imageFetchResults[0].responseBody);
+      clearImageFetchResults();
+    }
+  }
+
   const childAlbums = props.getChildAlbums(props.id).map(childAlbum => {
     return (
       <NavigationElement
@@ -82,15 +97,6 @@ export default function NavigationElement(props) {
 
     setIsAlbumNameClicked(false);
   }, [isAlbumNameClicked])
-
-  React.useEffect(() => {
-    // after the image fetch finishes, store the image(s) in state
-    if (imageFetchResults.length > 0) {
-      const response = imageFetchResults[0].responseBody;
-      props.addImageData(response);
-      clearImageFetchResults();
-    }
-  }, [imageFetchResults]);
 
   return (
     <>

@@ -7,21 +7,20 @@ import useCallAPI from '../CustomHooks/useCallAPI';
 import { checkPropTypes } from 'prop-types';
 
 export default function Confirmation(props) {
-  let errors = [];
-
   const {
     setFetchParameters: setAlbumFetchParameters,
     fetchResults: albumFetchResults,
     clearFetchResults: clearAlbumFetchResults
   } = useCallAPI();
 
-  function handleYesClick(event) {
-    setAlbumFetchParameters({
-      url: `${BASE_URL}${DELETE_ALBUMS_ENDPOINT}/${props.id}`,
-      method: 'DELETE',
-      bodies: []
-    })
-  }
+  let errors = [];
+
+  // clear any fetch results on initial component render
+  React.useEffect(() => {
+    if (albumFetchResults.length > 0) {
+      clearAlbumFetchResults();
+    }
+  }, [])
 
   // handle fetch response
   if (albumFetchResults.length > 0) {
@@ -36,13 +35,13 @@ export default function Confirmation(props) {
     }
   }
   
-  // clear any fetch results when the component
-  // first renders
-  React.useEffect(() => {
-    if (albumFetchResults.length > 0) {
-      clearAlbumFetchResults();
-    }
-  }, [])
+  function handleYesClick(event) {
+    setAlbumFetchParameters({
+      url: `${BASE_URL}${DELETE_ALBUMS_ENDPOINT}/${props.id}`,
+      method: 'DELETE',
+      bodies: []
+    })
+  }
 
   return (
     <ModalLayout close={props.close}>
