@@ -6,7 +6,6 @@ import AlbumForm from './AlbumForm';
 import Confirmation from './Confirmation';
 
 export default function AlbumCard(props) {
-  const [isAlbumClicked, setIsAlbumClicked] = React.useState(false);
   const [areDotsHovered, setAreDotsHovered] = React.useState(false);
   const [isAlbumFormDisplayed, setIsAlbumFormDisplayed] = React.useState(false);
   const [isConfirmationDisplayed, setIsConfirmationDisplayed] = React.useState(false);
@@ -31,7 +30,8 @@ export default function AlbumCard(props) {
     </div>
 
   function handleAlbumCardClick(event) {
-    setIsAlbumClicked(true);
+    props.clearImageData();
+    props.setSelectedAlbumId(props.id);
   }
 
   function handleEditAlbumClick(event) {
@@ -65,18 +65,6 @@ export default function AlbumCard(props) {
       return baseClass
     }
   }
-
-  React.useEffect(() => {
-    if (isAlbumClicked) {
-      // clear image data
-      props.clearImageData();
-
-      // set the selected album
-      props.setSelectedAlbumId(props.id);
-
-      setIsAlbumClicked(false);
-    }
-  }, [isAlbumClicked]);
 
   React.useEffect(() => {
     document.addEventListener('click', handleDocumentClick);

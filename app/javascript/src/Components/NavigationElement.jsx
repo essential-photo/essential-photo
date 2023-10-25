@@ -11,7 +11,6 @@ import useCallAPI from '../CustomHooks/useCallAPI';
 
 export default function NavigationElement(props) {
   const [areChildAlbumsDisplayed, setAreChildAlbumsDisplayed] = React.useState(false);
-  const [isAlbumNameClicked, setIsAlbumNameClicked] = React.useState(false);
 
   const {
     setFetchParameters: setImageFetchParameters,
@@ -59,44 +58,36 @@ export default function NavigationElement(props) {
   }
 
   function handleAlbumNameClick(event) {
-    setIsAlbumNameClicked(true);
+    // clear currently displayed images
+    props.clearImageData();
+
+    let url = '';
+
+    // if the clicked album is a non-root album
+    if (props.id) {
+      url = `${BASE_URL}${IMAGES_INDEX_ENDPOINT_BY_ALBUM_PUBLIC_IMAGES_ONLY}${props.id}`
+      props.setImageFilterText(`Displaying images from album: ${props.getAlbumName(props.id)}`);
+    }
+    // if the clicked album is the root album ('Albums')
+    else {
+      url = `${BASE_URL}${IMAGES_INDEX_ENDPOINT_PUBLIC_IMAGES_ONLY}`;
+      props.setImageFilterText('');
+    }
+
+    // send image fetch request
+    setImageFetchParameters({
+      url: url,
+      method: 'GET',
+      bodies: [],
+    });
+
+    // close nav
+    props.setIsNavDisplayed(false);
   }
 
   function handleIconClick(event) {
     setAreChildAlbumsDisplayed(!areChildAlbumsDisplayed)
   }
-
-  React.useEffect(() => {
-    if (isAlbumNameClicked) {
-      // clear currently displayed images
-      props.clearImageData();
-
-      let url = '';
-
-      // if the clicked album is a non-root album
-      if (props.id) {
-        url = `${BASE_URL}${IMAGES_INDEX_ENDPOINT_BY_ALBUM_PUBLIC_IMAGES_ONLY}${props.id}`
-        props.setImageFilterText(`Displaying images from album: ${props.getAlbumName(props.id)}`);
-      }
-      // if the clicked album is the root album ('Albums')
-      else {
-        url = `${BASE_URL}${IMAGES_INDEX_ENDPOINT_PUBLIC_IMAGES_ONLY}`;
-        props.setImageFilterText('');
-      }
-
-      // send image fetch request
-      setImageFetchParameters({
-        url: url,
-        method: 'GET',
-        bodies: [],
-      });
-
-      // close nav
-      props.setIsNavDisplayed(false);
-    }
-
-    setIsAlbumNameClicked(false);
-  }, [isAlbumNameClicked])
 
   return (
     <>

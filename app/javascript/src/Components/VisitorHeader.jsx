@@ -8,7 +8,6 @@ import useCallAPI from '../CustomHooks/useCallAPI';
 
 export default function VisitorHeader(props) {
   const [searchText, setSearchText] = React.useState('');
-  const [isFormSubmitted, setIsFormSubmitted] = React.useState(false);
   const [isNavDisplayed, setIsNavDisplayed] = React.useState(false);
   const [isDesktopScreen, setIsDesktopScreen] = React.useState(null);
 
@@ -17,6 +16,19 @@ export default function VisitorHeader(props) {
     fetchResults: imageFetchResults,
     clearFetchResults: clearImageFetchResults
   } = useCallAPI();
+
+  // when component initially renders, clear fetch results
+  React.useEffect(() => {
+    clearImageFetchResults();
+  }, []);
+
+  // handle image fetch results
+  if (imageFetchResults.length > 0) {
+    if (imageFetchResults[0].responseStatus === 200) {
+      props.addImageData(imageFetchResults[0].responseBody);
+      clearImageFetchResults();
+    }
+  }
 
   const navigation = (
     <Navigation
@@ -37,44 +49,28 @@ export default function VisitorHeader(props) {
     event.preventDefault();
 
     props.setImageFilterText(`Displaying images with tags: ${searchText}`);
-    setIsFormSubmitted(true);
+    
+    // clear existing images in state
+    props.clearImageData();
+
+    let url = `${BASE_URL}${IMAGES_INDEX_ENDPOINT_PUBLIC_IMAGES_ONLY}`
+
+    // only 'tags' query parameter if search text isn't blank
+    if (searchText) {
+      url = url + `?tags=${searchText}`;
+    }
+
+    // submit GET request to API
+    setImageFetchParameters({
+      url: url,
+      method: 'GET',
+      bodies: [],
+    });
   }
 
   function handleIconClick() {
     setIsNavDisplayed(!isNavDisplayed);
   }
-
-  React.useEffect(() => {
-    if (isFormSubmitted) {
-      // clear existing images in state
-      props.clearImageData();
-
-      let url = `${BASE_URL}${IMAGES_INDEX_ENDPOINT_PUBLIC_IMAGES_ONLY}`
-
-      // only 'tags' query parameter if search text isn't blank
-      if (searchText) {
-        url = url + `?tags=${searchText}`;
-      }
-
-      // submit GET request to API
-      setImageFetchParameters({
-        url: url,
-        method: 'GET',
-        bodies: [],
-      });
-    }
-
-    setIsFormSubmitted(false);
-  }, [isFormSubmitted])
-
-  React.useEffect(() => {
-    // after the image fetch finishes, store the image(s) in state
-    if (imageFetchResults.length > 0) {
-      const response = imageFetchResults[0].responseBody;
-      props.addImageData(response);
-      clearImageFetchResults();
-    }
-  }, [imageFetchResults]);
 
   React.useEffect(() => {
     function determineIfDesktopScreen(width) {
