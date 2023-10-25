@@ -30,7 +30,6 @@ export default function AlbumCard(props) {
     </div>
 
   function handleAlbumCardClick(event) {
-    props.clearImageData();
     props.setSelectedAlbumId(props.id);
   }
 
@@ -91,7 +90,7 @@ export default function AlbumCard(props) {
       {isConfirmationDisplayed &&
         <Confirmation 
           close={() => setIsConfirmationDisplayed(false)}
-          deleteAlbumData={props.deleteAlbumData}
+          setIsRefreshed={props.setIsRefreshed}
           id={props.id}
         />
       }

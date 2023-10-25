@@ -57,8 +57,10 @@ class Api::V1::ImagesController < ApplicationController
     end
 
     # add image to an album
-    if params[:parent_album_id]
-      @image.parent_album_id = params[:parent_album_id]
+    if params[:parent_album_id] == 'null'
+        @image.parent_album_id = nil
+    else
+        @image.parent_album_id = params[:parent_album_id]
     end
     
     if @image.save
@@ -100,6 +102,13 @@ class Api::V1::ImagesController < ApplicationController
       else 
         @image.tags.create(name: new_tag_name)
       end
+    end
+
+    # add image to an album
+    if params[:parent_album_id] == 'null'
+        @image.parent_album_id = nil
+    else
+        @image.parent_album_id = params[:parent_album_id]
     end
 
     if @image.save

@@ -34,6 +34,7 @@ export default function AdminImages() {
   const [albumData, setAlbumData] = React.useState([]);
   const [selectedAlbumId, setSelectedAlbumId] = React.useState(null);
   const [isAlbumFormDisplayed, setIsAlbumFormDisplayed] = React.useState(false);
+  const [isRefreshed, setIsRefreshed] = React.useState(false);
 
   const fileInputEl = React.useRef(null);
   const childAlbums = getChildAlbums(selectedAlbumId);
@@ -45,7 +46,13 @@ export default function AdminImages() {
   }, []);
 
   // load images/albums belonging to selected album when the selected album changes
+  // or when refreshed
   useEffect(() => {
+    clearImageData();
+    clearAlbumData();
+
+    console.log('refreshing');
+
     setAlbumFetchParameters({
       url: `${BASE_URL}${ALBUMS_INDEX_ENDPOINT}`,
       method: 'GET',
@@ -57,7 +64,11 @@ export default function AdminImages() {
       method: 'GET',
       bodies: [],
     });
-  }, [selectedAlbumId]);
+
+    if (isRefreshed) {
+      setIsRefreshed(false);
+    }
+  }, [selectedAlbumId, isRefreshed]);
 
   // handle image fetch results
   if (imageFetchResults.length > 0) {
@@ -120,12 +131,14 @@ export default function AdminImages() {
     let currentAlbumId = albumId;
     let currentAlbum;
 
-    while (currentAlbumId) {
-      currentAlbum = albumData.find(album => album.id === currentAlbumId);
-      albumPath.push(currentAlbum);
-      currentAlbumId = currentAlbum.parent_album_id;
+    if (albumData.length > 0) {
+      while (currentAlbumId) {
+        currentAlbum = albumData.find(album => album.id === currentAlbumId);
+        albumPath.push(currentAlbum);
+        currentAlbumId = currentAlbum.parent_album_id;
+      }
     }
- 
+    
     return albumPath.reverse();
   }
 
@@ -156,6 +169,7 @@ export default function AdminImages() {
     const formDatas = imageFiles.map(file => {
       const formData = new FormData();
       formData.append('image', file);
+      formData.append('parent_album_id', selectedAlbumId);
       return formData;
     });
 
@@ -198,11 +212,6 @@ export default function AdminImages() {
 
       return tempData;
     })
-  }
-
-  function deleteAlbumData(id) {
-    // manually delete object in data array
-    setAlbumData(prevData => prevData.filter(item => item.id != id));
   }
 
   return (
@@ -258,13 +267,14 @@ export default function AdminImages() {
             updateImageData={updateImageData}
             addAlbumData={addAlbumData}
             updateAlbumData={updateAlbumData}
-            deleteAlbumData={deleteAlbumData}
             areImagesLoading={areImagesLoading}
             clearImageData={clearImageData}
+            clearAlbumData={clearAlbumData}
             areAlbumsLoading={areAlbumsLoading}
             childAlbums={childAlbums}
             setSelectedAlbumId={setSelectedAlbumId}
             selectedAlbumId={selectedAlbumId}
+            setIsRefreshed={setIsRefreshed}
           />
         </main>
       </AdminLayout>

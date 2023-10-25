@@ -36,14 +36,15 @@ export default function DragDrop(props) {
         id={childAlbum.id}
         name={childAlbum.name}
         clearImageData={props.clearImageData}
+        clearAlbumData={props.clearAlbumData}
         updateImageData={props.updateImageData}
         updateAlbumData={props.updateAlbumData}
-        deleteAlbumData={props.deleteAlbumData}
         addAlbumData={props.addAlbumData}
         setSelectedAlbumId={props.setSelectedAlbumId}
         selectedAlbumId={props.selectedAlbumId}
         displayedOptionsId={displayedOptionsId}
         setDisplayedOptionsId={setDisplayedOptionsId}
+        setIsRefreshed={props.setIsRefreshed}
       />
     )
   });
@@ -84,6 +85,7 @@ export default function DragDrop(props) {
     const formDatas = imageFiles.map(file => {
       const formData = new FormData();
       formData.append('image', file);
+      formData.append('parent_album_id', props.selectedAlbumId);
       return formData;
     });
 

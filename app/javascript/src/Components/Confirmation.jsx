@@ -25,7 +25,8 @@ export default function Confirmation(props) {
   // handle fetch response
   if (albumFetchResults.length > 0) {
     if (albumFetchResults[0].responseStatus === 200) {
-      props.deleteAlbumData(props.id);
+      console.log('refresh from confirmation component');
+      props.setIsRefreshed(true);
       props.close();
     }
     else {
