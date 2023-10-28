@@ -30,6 +30,7 @@ export default function EditImage(props) {
     if (imageFetchResults[0].responseStatus === 200) {
       props.updateImageData(imageFetchResults[0].responseBody);
       clearImageFetchResults();
+      props.close();
     }
   }
 

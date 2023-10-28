@@ -33,10 +33,12 @@ export default function AlbumForm(props) {
     if (albumFetchResults[0].requestMethod === 'PATCH' && albumFetchResults[0].responseStatus === 200) {
       props.updateAlbumData(albumFetchResults[0].responseBody);
       clearAlbumFetchResults();
+      props.close();
     }
     else if (albumFetchResults[0].requestMethod === 'POST' && albumFetchResults[0].responseStatus === 201) {
       props.addAlbumData(albumFetchResults[0].responseBody);
       clearAlbumFetchResults();
+      props.close();
     }
     else if (albumFetchResults[0].responseStatus > 400) {
       errors = albumFetchResults[0].responseBody.map(errorMessage => 

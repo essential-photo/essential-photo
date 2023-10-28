@@ -45,30 +45,22 @@ export default function AdminImages() {
     clearImageFetchResults();
   }, []);
 
-  // load images/albums belonging to selected album when the selected album changes
-  // or when refreshed
+  // reload images/albums when the selected album changes
   useEffect(() => {
     clearImageData();
     clearAlbumData();
+    getImagesAndAlbums();
+  }, [selectedAlbumId]);
 
-    console.log('refreshing');
-
-    setAlbumFetchParameters({
-      url: `${BASE_URL}${ALBUMS_INDEX_ENDPOINT}`,
-      method: 'GET',
-      bodies: [],
-    })
-
-    setImageFetchParameters({
-      url: `${BASE_URL}${IMAGES_INDEX_ENDPOINT_BY_ALBUM_PUBLIC_IMAGES_ONLY}${selectedAlbumId}`,
-      method: 'GET',
-      bodies: [],
-    });
-
+  // reload images/albums when a refresh is called
+  useEffect(() => {
     if (isRefreshed) {
+      clearImageData();
+      clearAlbumData();
+      getImagesAndAlbums();
       setIsRefreshed(false);
     }
-  }, [selectedAlbumId, isRefreshed]);
+  }, [isRefreshed]);
 
   // handle image fetch results
   if (imageFetchResults.length > 0) {
@@ -84,6 +76,20 @@ export default function AdminImages() {
       addAlbumData(albumFetchResults[0].responseBody);
       clearAlbumFetchResults();
     }
+  }
+
+  function getImagesAndAlbums() {
+    setAlbumFetchParameters({
+      url: `${BASE_URL}${ALBUMS_INDEX_ENDPOINT}`,
+      method: 'GET',
+      bodies: [],
+    })
+
+    setImageFetchParameters({
+      url: `${BASE_URL}${IMAGES_INDEX_ENDPOINT_BY_ALBUM_PUBLIC_IMAGES_ONLY}${selectedAlbumId}`,
+      method: 'GET',
+      bodies: [],
+    });
   }
 
   function clearImageData() {
