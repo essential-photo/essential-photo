@@ -4,11 +4,35 @@ import folderIcon from '../images/folder-icon.svg';
 import dotsIcon from '../images/dots-icon.svg';
 import AlbumForm from './AlbumForm';
 import Confirmation from './Confirmation';
+import useCallAPI from '../CustomHooks/useCallAPI';
+import {BASE_URL, DELETE_ALBUMS_ENDPOINT} from '../settings';
 
 export default function AlbumCard(props) {
   const [areDotsHovered, setAreDotsHovered] = React.useState(false);
   const [isAlbumFormDisplayed, setIsAlbumFormDisplayed] = React.useState(false);
   const [isConfirmationDisplayed, setIsConfirmationDisplayed] = React.useState(false);
+
+  const {
+    setFetchParameters: setAlbumFetchParameters,
+    fetchResults: albumFetchResults,
+    clearFetchResults: clearAlbumFetchResults
+  } = useCallAPI();
+
+  // clear any fetch results on initial component render
+  React.useEffect(() => {
+    if (albumFetchResults.length > 0) {
+      clearAlbumFetchResults();
+    }
+  }, [])
+
+  // handle fetch response
+  if (albumFetchResults.length > 0) {
+    if (albumFetchResults[0].responseStatus === 200) {
+      props.setIsRefreshed(true);
+      setIsConfirmationDisplayed(false);
+      clearAlbumFetchResults();
+    }
+  }
 
   const options = 
     <div
@@ -28,6 +52,14 @@ export default function AlbumCard(props) {
         Delete Album
       </p>
     </div>
+
+  function handleConfirm() {
+    setAlbumFetchParameters({
+      url: `${BASE_URL}${DELETE_ALBUMS_ENDPOINT}/${props.id}`,
+      method: 'DELETE',
+      bodies: []
+    })
+  }
 
   function handleAlbumCardClick(event) {
     props.setSelectedAlbumId(props.id);
@@ -90,7 +122,7 @@ export default function AlbumCard(props) {
       {isConfirmationDisplayed &&
         <Confirmation 
           close={() => setIsConfirmationDisplayed(false)}
-          setIsRefreshed={props.setIsRefreshed}
+          handleConfirm={handleConfirm}
           id={props.id}
         />
       }
