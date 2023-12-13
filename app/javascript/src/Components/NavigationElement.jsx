@@ -30,6 +30,7 @@ export default function NavigationElement(props) {
     if (imageFetchResults[0].responseStatus === 200) {
       props.addImageData(imageFetchResults[0].responseBody);
       clearImageFetchResults();
+      props.setIsNavDisplayed(false);
     }
   }
 
@@ -80,9 +81,6 @@ export default function NavigationElement(props) {
       method: 'GET',
       bodies: [],
     });
-
-    // close nav
-    props.setIsNavDisplayed(false);
   }
 
   function handleIconClick(event) {
