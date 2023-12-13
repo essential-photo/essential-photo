@@ -72,10 +72,20 @@ class Api::V1::ImagesController < ApplicationController
 
   def update
     @image = Image.find(params[:id])
-    @image.title = params[:title]
-    @image.description = params[:description]
+
+    if params[:title] == 'null'
+      @image.title = nil
+    else
+      @image.title = params[:title]
+    end
+
+    if params[:description] == 'null'
+      @image.description = nil
+    else
+      @image.description = params[:description]
+    end
+
     @image.is_public = params[:is_public]
-    @image.parent_album_id = params[:parent_album_id]
 
     # expect tags to be separated by comma,
     # and strip leading/trailing whitespace
