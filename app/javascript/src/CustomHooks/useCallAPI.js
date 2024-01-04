@@ -15,7 +15,7 @@ import {useNavigate} from 'react-router-dom';
 // and the user will be redirected to the login page
 
 export default function useCallAPI() {
-  const [data, setData] = React.useState([]);
+  const [fetchResults, setFetchResults] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(false);
   const [fetchParameters, setFetchParameters] = React.useState({
     url: '',
@@ -26,23 +26,50 @@ export default function useCallAPI() {
   const navigate = useNavigate();
   const {logout} = React.useContext(Context);
 
-  function updateDataItem(data) {
-    // manually update object in data array
-    setData(prevData => {
-      return prevData.map(item => {
-        if (item.id === data.id) {
-          return data;
-        }
-        else {
-          return item;
-        }
+  function clearFetchResults() {
+    setFetchResults([]);
+  }
+
+  function storeFetchResults(requestURL, requestMethod, requestBody, responseStatus, parsedResponse) {
+    setFetchResults( prevData => {
+      const tempData = prevData.slice(0);
+      let body; 
+
+      if (requestBody){
+        // convert requestBody formData object to JSON
+        const obj = {};
+        requestBody.forEach((value, key) => obj[key] = value);
+        body = JSON.stringify(obj);
+      }
+
+      tempData.push({
+        responseStatus: responseStatus,
+        responseBody: parsedResponse,
+        requestBody: body,
+        requestURL: requestURL,
+        requestMethod: requestMethod
       });
+      return tempData;
     });
   }
 
-  function clearData() {
-    //clear data from state
-    setData([]);
+  function updateTokens(response) {
+    // update tokens if response sends new ones
+    const accessToken = response.headers.get('access-token');
+    const clientToken = response.headers.get('client');
+    const uidToken = response.headers.get('uid');
+
+    if (accessToken) {
+      sessionStorage.setItem('access-token', accessToken);
+    }
+
+    if (clientToken) {
+      sessionStorage.setItem('client', clientToken);
+    }
+
+    if (uidToken) {
+      sessionStorage.setItem('uid', uidToken);
+    }
   }
 
   React.useEffect(() => {
@@ -57,6 +84,8 @@ export default function useCallAPI() {
         body: body,
       });
 
+      const parsedResponse = await response.json();
+
       // if the response is a 401 (unauthorized), logout the user and redirect
       // to login page
       if (response.status === 401) {
@@ -64,47 +93,26 @@ export default function useCallAPI() {
         logout();
         navigate("/login", {replace: true});
       }
-
-      // update tokens if response sends new ones
-      const accessToken = response.headers.get('access-token');
-      const clientToken = response.headers.get('client');
-      const uidToken = response.headers.get('uid');
-
-      if (accessToken) {
-        sessionStorage.setItem('access-token', accessToken);
-      }
-
-      if (clientToken) {
-        sessionStorage.setItem('client', clientToken);
-      }
-
-      if (uidToken) {
-        sessionStorage.setItem('uid', uidToken);
-      }
-
-      // save data
-      const parsedResponse = await response.json();
-      setData(prevData => {
-        const tempData = prevData.slice(0);
+      // otherwise, store the results of the fetch and update tokens
+      else {
+        // store the results of the fetch
+        storeFetchResults(url, method, body, response.status, parsedResponse);
         
-        if (Array.isArray(parsedResponse)) {
-          parsedResponse.forEach(item => tempData.push(item));
-        }
-        else {
-          tempData.push(parsedResponse);
-        }
-        
-        return tempData;
-      })
+        // update tokens
+        updateTokens(response);
+      }
     }
 
     if (fetchParameters.url && fetchParameters.method) {
       // set loading state
       setIsLoading(true);
 
+      // clear results
+      setFetchResults([]);
+
       // send request(s)
       let promises = [];
-      if (fetchParameters.method === 'GET') {
+      if (fetchParameters.method === 'GET' || fetchParameters.method === 'DELETE') {
         promises.push(callAPI(fetchParameters.url, fetchParameters.method, null));
       }
       else {
@@ -113,7 +121,7 @@ export default function useCallAPI() {
         });
       }
 
-      // once all fetches are done, set loading state to false and clear fetchParameters
+      // once all fetches are done, set loading state to false
       Promise.all(promises)
       .then(() => {
         setIsLoading(false);
@@ -123,10 +131,10 @@ export default function useCallAPI() {
         url: '',
         method: '',
         bodies: [],
-      }); 
+      });
     }
 
   }, [fetchParameters, logout, navigate]);
 
-  return {data, isLoading, updateDataItem, clearData, setFetchParameters}
+  return {isLoading, fetchResults, clearFetchResults, setFetchParameters}
 }

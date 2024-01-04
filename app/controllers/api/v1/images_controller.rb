@@ -15,6 +15,15 @@ class Api::V1::ImagesController < ApplicationController
       end
     end
 
+    # filter results based on album
+    if params[:parent_album_id]
+      if params[:parent_album_id] == 'null'
+        @images = @images.where(parent_album_id: nil)
+      else
+        @images = @images.where(parent_album_id: params[:parent_album_id])
+      end
+    end
+
     # filter results based on tag
     if params[:tags]
       tags_array = params[:tags].split(",").map{|tag| tag.strip}
@@ -46,6 +55,13 @@ class Api::V1::ImagesController < ApplicationController
       thumbnail_filename = filename.insert(filename.index('.'), '_thumb')
       @image.thumbnail.attach(io: thumbnail, filename: thumbnail_filename)
     end
+
+    # add image to an album
+    if params[:parent_album_id] == 'null'
+        @image.parent_album_id = nil
+    else
+        @image.parent_album_id = params[:parent_album_id]
+    end
     
     if @image.save
       render json: formatted_image(@image), status: :created
@@ -56,8 +72,19 @@ class Api::V1::ImagesController < ApplicationController
 
   def update
     @image = Image.find(params[:id])
-    @image.title = params[:title]
-    @image.description = params[:description]
+
+    if params[:title] == 'null'
+      @image.title = nil
+    else
+      @image.title = params[:title]
+    end
+
+    if params[:description] == 'null'
+      @image.description = nil
+    else
+      @image.description = params[:description]
+    end
+
     @image.is_public = params[:is_public]
 
     # expect tags to be separated by comma,
@@ -87,6 +114,13 @@ class Api::V1::ImagesController < ApplicationController
       end
     end
 
+    # add image to an album
+    if params[:parent_album_id] == 'null'
+        @image.parent_album_id = nil
+    else
+        @image.parent_album_id = params[:parent_album_id]
+    end
+
     if @image.save
       render json: formatted_image(@image), status: :ok
     else
@@ -103,6 +137,7 @@ class Api::V1::ImagesController < ApplicationController
       description: image.description,
       tags: image.tags,
       is_public: image.is_public,
+      parent_album_id: image.parent_album_id,
       image_url: url_for(image.image),
       thumbnail_url: url_for(image.thumbnail),
       created_at: image.created_at,

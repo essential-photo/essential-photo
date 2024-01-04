@@ -1,0 +1,30 @@
+.navigationElement {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+.navigationElement__icon {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.navigationElement__albumName {
+  cursor: pointer;
+}
+
+@media screen and (min-width: 701px) {
+  .navigationElement {
+    padding-top: 5px;
+    padding-bottom: 5px;
+  }
+
+	.navigationElement__icon {
+		width: 10px;
+    height: 10px;
+    margin-left: 3px;
+	}
+}

@@ -1,0 +1,31 @@
+.confirmation {
+  padding: 25px;
+  border: 1px solid #B9B9B9;
+  border-radius: 5px;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.confirmation__message {
+  margin-bottom: 24px;
+}
+
+.confirmation__closeIcon {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.confirmation__button {
+  margin-left: 25px;
+  margin-right: 25px;
+}
+
+.confirmation__buttonContainer {
+  display: flex;
+}

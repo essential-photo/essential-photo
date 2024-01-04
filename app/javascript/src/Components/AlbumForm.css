@@ -1,0 +1,29 @@
+.albumForm {
+  padding: 25px;
+  border: 1px solid #B9B9B9;
+  border-radius: 5px;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.albumForm__form {
+  display: flex;
+  flex-direction: column;
+  margin-top: 25px;
+}
+
+.albumForm__title {
+  font-weight: bold;
+  font-size: 24px;
+}
+
+.albumForm__closeIcon {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 10px;
+  cursor: pointer;
+}

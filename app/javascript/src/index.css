@@ -101,19 +101,30 @@ input:focus {
   outline: 2px solid #4579FF;
 }
 
+.formSubmitErrorMessage {
+  color: red;
+  margin-bottom: 24px;
+}
+
 .button {
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
   padding: 0px 10px;
   height: 35px;
-  border: none;
+  border: 1px solid #B9B9B9;
   border-radius: 5px;
-  background-color: #4579FF;
-  color: white;
   font-weight: bold;
   font-size: 16px;
   cursor: pointer;
+  min-width: 150px;
+  background-color: white;
+}
+
+.button--active {
+  color: white;
+  border: none;
+  background-color: #4579FF;
 }
 
 .button--wide {
