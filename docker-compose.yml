@@ -3,14 +3,34 @@
 version: '3'
 
 services:
+  essential-photo:
+    build: 
+      context: ..
+      dockerfile: Dockerfile
+    volumes:
+      - .:/opt/essential-photo
+    tmpfs:
+      - /tmp/pids
+    ports:
+      - '3001:3001'
+
+    environment:
+      DB_HOST: localhost
+      DB_NAME: essential_photo_backend_development
+      DB_USER: postgres
+      DB_PASSWORD: password
+      PIDFILE: /tmp/pids/server.pid
+
+    command: bin/rails s -p 3001 --binding 0.0.0.0
+    entrypoint: ["/opt/essential-photo/docker-entrypoint.sh"]
+    
   db:
     image: postgres:14.7-alpine
-    restart: always
+    restart: unless-stopped
     environment:
       POSTGRES_USER: postgres
       POSTGRES_DB: essential_photo_backend_development
       POSTGRES_PASSWORD: password
-    command: "postgres -c 'max_connections=500'"
     volumes: 
       - db_data:/var/lib/postgresql/data
     healthcheck:
@@ -18,25 +38,6 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-  backend: 
-    build: .
-    command: bin/rails s -p 3001 --binding 0.0.0.0
-    entrypoint: ["/opt/essential-photo/docker-entrypoint.sh"]
-    ports:
-      - '3001:3001'
-    depends_on:
-      db:
-        condition: service_healthy
-    environment:
-      DB_HOST: localhost
-      DB_NAME: essential_photo_backend_development
-      DB_USER: postgres
-      DB_PASSWORD: password
-      PIDFILE: /tmp/pids/server.pid
-    volumes:
-      - .:/opt/essential-photo
-    tmpfs:
-      - /tmp/pids
 volumes:
   db_data:
 networks:
