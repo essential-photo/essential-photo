@@ -1,6 +1,6 @@
 .adminImageCard {
   width: 20%;
-  padding: 7px;
+  margin: 0 14px 14px 0;
 }
 
 .adminImageCard__wrapper {

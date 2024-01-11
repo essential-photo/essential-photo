@@ -32,7 +32,7 @@ export default function AdminImageCard(props) {
         <EditImage
           image={props.image}
           close={closeEditImage}
-          updateImage={props.updateImage}
+          updateImageData={props.updateImageData}
         />
       }
       {isDeleteConfirmationDisplayed &&

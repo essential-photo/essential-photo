@@ -1,0 +1,10 @@
+{
+    "html": {
+            "enabled": true,
+            "output": "reports/report.html"
+    },
+    "messages": {
+        "enabled": true,
+        "output": "reports/cucumber-messages.ndjson"
+      }
+}

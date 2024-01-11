@@ -2,11 +2,17 @@ import React, { useEffect } from 'react';
 import './EditImage.css';
 import ModalLayout from '../Layouts/ModalLayout';
 import xIcon from '../images/x-icon.svg';
-import useCallAPI from '../CustomHooks/useCallAPI';
 import {BASE_URL, UPDATE_IMAGE_ENDPOINT} from '../settings';
+import useCallAPI from '../CustomHooks/useCallAPI';
 
 export default function EditImage(props) {
-  const {updateImage} = props;
+  const {
+    isLoading: areImagesLoading,
+    setFetchParameters: setImageFetchParameters,
+    fetchResults: imageFetchResults,
+    clearFetchResults: clearImageFetchResults
+  } = useCallAPI();
+
   const [imageFormData, setImageFormData] = React.useState({
     title: props.image.title,
     description: props.image.description,
@@ -14,7 +20,19 @@ export default function EditImage(props) {
     isPublic: props.image.is_public,
   })
 
-  const {data, isLoading, setFetchParameters} = useCallAPI();  
+  // when component first renders, clear fetch results
+  useEffect(() => {
+    clearImageFetchResults();    
+  }, [])
+
+  // handle fetch response
+  if (imageFetchResults.length > 0) {
+    if (imageFetchResults[0].responseStatus === 200) {
+      props.updateImageData(imageFetchResults[0].responseBody);
+      clearImageFetchResults();
+      props.close();
+    }
+  }
 
   function handleChange(event) {
     setImageFormData(prevData => {
@@ -36,27 +54,20 @@ export default function EditImage(props) {
     formData.append('description', imageFormData.description);
     formData.append('tags', imageFormData.tags);
     formData.append('is_public', imageFormData.isPublic);
+    formData.append('parent_album_id', props.image.parent_album_id);
     
     //submit image update request to api
-    setFetchParameters({
+    setImageFetchParameters({
       url: `${BASE_URL}${UPDATE_IMAGE_ENDPOINT}/${props.image.id}`,
       method: 'PATCH',
       bodies: [formData],
     });
   }
-
-  useEffect(() => {
-    // if the update request has already been made, 
-    // update the associated image in state
-    if (data.length > 0) {
-      props.updateImage(data[data.length - 1]);
-    }
-  }, [data])
   
   return (
     <ModalLayout close={props.close} dark={true}>
       <main className="editImage">
-        {isLoading &&
+        {areImagesLoading &&
           <div className="editImage__overlay">
             <h1>Loading...</h1>
           </div>
@@ -117,7 +128,7 @@ export default function EditImage(props) {
               ></input>
               <label htmlFor="isPublic">Is Public</label>
             </div>
-            <button type="submit" className="button button--wide">Update Image</button>
+            <button type="submit" className="button button--active button--wide">Update Image</button>
           </form>
         </div>
       </main>

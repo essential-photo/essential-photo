@@ -1,0 +1,46 @@
+.navigationRootElement {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+.navigationRootElement__icon {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.navigationRootElement__elementContainer {
+}
+
+@media screen and (min-width: 701px) {
+  .navigationRootElement {
+    padding-top: 0px;
+    padding-bottom: 0px;
+  }
+
+	.navigationRootElement__icon {
+		width: 10px;
+    height: 10px;
+    margin-left: 3px;
+	}
+
+  .navigationRootElement__elementContainer {
+    position: absolute;
+    right: 0;
+    top: 35px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    background-color: white;
+    z-index: 999;
+    width: 300px;
+    padding: 15px;
+    border-radius: 5px;
+    border: solid 1px #B9B9B9;
+  }
+}

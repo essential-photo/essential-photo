@@ -1,25 +1,46 @@
-import React, { useEffect } from 'react';
+
+import React from 'react';
 import './Confirmation.css';
 import ModalLayout from '../Layouts/ModalLayout';
 import xIcon from '../images/x-icon.svg';
-import {BASE_URL, DELETE_IMAGES_ENDPOINT} from '../settings';
 
 export default function Confirmation(props) {
-    const {data, isLoading, updateDataItem, setFetchParameters} = useCallAPI();
+  function handleYesClick(event) {
+    props.handleConfirm();
+  }
 
-// initiate file deletion
+  // initiate file deletion
 props.setFetchParameters({
-    url: `${BASE_URL}${DELETE_IMAGES_ENDPOINT}/${props.image.id}`,
-    method: 'DELETE',
-    bodies: []
-  });
-
+  url: `${BASE_URL}${DELETE_IMAGES_ENDPOINT}/${props.image.id}`,
+  method: 'DELETE',
+  bodies: []
+});
 
   return (
-    <>
-     <p> Delete Modal </p>
-
-    </>
-  );
-
+    <ModalLayout close={props.close}>
+      <div className="confirmation">
+        <img
+          src={xIcon}
+          className="confirmation__closeIcon"
+          onClick={() => {props.close()}}
+          alt="this is an X icon"
+        ></img>
+        <p className="confirmation__message">Are you sure?</p>
+        <div className="confirmation__buttonContainer">
+          <button 
+            className='button button--active confirmation__button'
+            onClick={handleYesClick}
+          >
+            Yes
+          </button>
+          <button
+            className='button confirmation__button'
+            onClick={() => {props.close()}}
+          >
+            No
+          </button>
+        </div>
+      </div>
+    </ModalLayout>
+  )
 }

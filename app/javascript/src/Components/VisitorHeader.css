@@ -1,8 +1,10 @@
 .visitorHeader {
+}
+
+.visitorHeader__top {
   display: flex;
   justify-content: space-between;
-  flex-wrap: wrap;
-  padding: 20px 0 5px 0;
+  padding: 25px;
 }
 
 .visitorHeader__title {
@@ -12,7 +14,9 @@
 }
 
 .visitorHeader__search {
-  width: 50%;
+  padding-left: 25px;
+  padding-right: 25px;
+  max-width: 500px;
 }
 
 .visitorHeader__input {
@@ -27,14 +31,9 @@
   color: #B9B9B9;
 }
 
-/* mobile styles */
-@media screen and (max-width: 550px) {
-  .visitorHeader__title {
-    width: 100%;
-  }
-  
-  .visitorHeader__search {
-    width: 1000%;
-    margin-top: 10px;
-  }
+.visitorHeader__icon {
+  width: 25px;
+  height: 25px;
+  align-self: center;
+  cursor: pointer;
 }

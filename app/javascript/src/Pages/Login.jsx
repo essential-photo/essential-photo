@@ -98,10 +98,10 @@ export default function Login(props) {
 
           {
             //if there are errors, display them here
-            error && <p className="login__error">{error}</p>
+            error && <p className="formSubmitErrorMessage">{error}</p>
           }
 
-          <button className="button button--wide">Log In</button>
+          <button className="button button--active button--wide">Log In</button>
         </form>
       </div>
     </AdminLayout>
