@@ -19,19 +19,19 @@ dev-scripts/start_codespace_app.sh
 docker-compose build
 ```
 
-output debugging:
+Output debugging:
 
 ```bash
 docker-compose build --progress=plain
 ```
 
-cleaning build (discard cache):
+Cleaning build (discard cache):
 
 ```bash
 docker-compose build --no-cache
 ```
 
-start the application and services:
+Start the application and services:
 
 ```bash
 docker-compose up
