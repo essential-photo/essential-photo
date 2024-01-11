@@ -17,7 +17,7 @@
 	//"forwardPorts": [3001, 5432],
 	"forwardPorts": [3001],
 	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "bundle install && rake db:setup && npm install",
+	"postCreateCommand": "bundle install && npm install && rake db:setup && rake db:migrate && rake users:seed_admin",
 
 	// Configure tool-specific properties
 	"customizations": {
