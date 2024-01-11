@@ -11,6 +11,7 @@ export default function AdminImageCard(props) {
   const [isEditImageDisplayed, setIsEditImageDisplayed] = React.useState(false);
   const [isDeleteConfirmationDisplayed, setIsDeleteConfirmationDisplayed] = React.useState(false);
 
+
   function getIconClass(isHovered) {
     if (isHovered) {
       return 'adminImageCard__icon adminImageCard__icon--hovered';
@@ -26,6 +27,14 @@ export default function AdminImageCard(props) {
     setIsDeleteConfirmationDisplayed(false);
   }
 
+  function handleConfirm() {
+    setAlbumFetchParameters({
+      url: `${BASE_URL}${DELETE_IMAGES_ENDPOINT}/${props.image.id}`,
+      method: 'DELETE',
+      bodies: []
+    })
+  }
+
   return (
     <>
       {isEditImageDisplayed &&
@@ -36,12 +45,13 @@ export default function AdminImageCard(props) {
         />
       }
       {isDeleteConfirmationDisplayed &&
-        <Confirmation
-          image={props.image.id}
-          close={closeDeleteConfirmation}
-          updateImage={props.updateImage}
+        <Confirmation 
+          close={() => setIsConfirmationDisplayed(false)}
+          handleConfirm={handleConfirm}
+          id={props.id}
         />
       }
+
       <div className="adminImageCard">
         <div className="adminImageCard__wrapper">
           <div className="adminImageCard__imageContainer">

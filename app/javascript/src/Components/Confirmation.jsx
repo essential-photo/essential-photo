@@ -9,12 +9,6 @@ export default function Confirmation(props) {
     props.handleConfirm();
   }
 
-  // initiate file deletion
-props.setFetchParameters({
-  url: `${BASE_URL}${DELETE_IMAGES_ENDPOINT}/${props.image.id}`,
-  method: 'DELETE',
-  bodies: []
-});
 
   return (
     <ModalLayout close={props.close}>
