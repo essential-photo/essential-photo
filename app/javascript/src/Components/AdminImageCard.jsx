@@ -26,6 +26,14 @@ export default function AdminImageCard(props) {
       }
     }, [])
 
+      // handle fetch response
+  if (deleteFetchResults.length > 0) {
+    if (deleteFetchResults[0].responseStatus === 200) {
+      setIsDeleteConfirmationDisplayed(false);
+      clearDeleteFetchResults();
+    }
+  }
+
   function getIconClass(isHovered) {
     if (isHovered) {
       return 'adminImageCard__icon adminImageCard__icon--hovered';
@@ -47,7 +55,6 @@ export default function AdminImageCard(props) {
       method: 'DELETE',
       bodies: []
     })
-    setIsDeleteConfirmationDisplayed(false);
   }
 
   return (
