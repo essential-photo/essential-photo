@@ -4,6 +4,8 @@ import EditImage from './EditImage';
 import Confirmation from './Confirmation';
 import editIcon from '../images/pencil-icon.svg';
 import deleteIcon from '../images/ph_trash.svg';
+import useCallAPI from '../CustomHooks/useCallAPI';
+import {BASE_URL, DELETE_IMAGES_ENDPOINT} from '../settings';
 
 export default function AdminImageCard(props) {
   const [isEditHovered, setEditIsHovered] = React.useState(false);
@@ -11,6 +13,18 @@ export default function AdminImageCard(props) {
   const [isEditImageDisplayed, setIsEditImageDisplayed] = React.useState(false);
   const [isDeleteConfirmationDisplayed, setIsDeleteConfirmationDisplayed] = React.useState(false);
 
+  const {
+    setFetchParameters: setDeleteFetchParameters,
+    fetchResults: deleteFetchResults,
+    clearFetchResults: clearDeleteFetchResults
+  } = useCallAPI();
+
+    // clear any fetch results on initial component render
+    React.useEffect(() => {
+      if (deleteFetchResults.length > 0) {
+        clearDeleteFetchResults();
+      }
+    }, [])
 
   function getIconClass(isHovered) {
     if (isHovered) {
@@ -28,11 +42,12 @@ export default function AdminImageCard(props) {
   }
 
   function handleConfirm() {
-    setAlbumFetchParameters({
+    setDeleteFetchParameters({
       url: `${BASE_URL}${DELETE_IMAGES_ENDPOINT}/${props.image.id}`,
       method: 'DELETE',
       bodies: []
     })
+    setIsDeleteConfirmationDisplayed(false);
   }
 
   return (
@@ -46,7 +61,7 @@ export default function AdminImageCard(props) {
       }
       {isDeleteConfirmationDisplayed &&
         <Confirmation 
-          close={() => setIsConfirmationDisplayed(false)}
+          close={() => setIsDeleteConfirmationDisplayed(false)}
           handleConfirm={handleConfirm}
           id={props.id}
         />
