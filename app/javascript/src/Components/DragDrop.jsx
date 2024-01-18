@@ -55,6 +55,7 @@ export default function DragDrop(props) {
         key={image.id}
         image={image}
         updateImageData={props.updateImageData}
+        deleteImageData={props.deleteImageData}
       />
     );
   });

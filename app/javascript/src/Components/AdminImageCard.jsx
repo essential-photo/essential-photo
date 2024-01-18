@@ -5,7 +5,8 @@ import Confirmation from './Confirmation';
 import editIcon from '../images/pencil-icon.svg';
 import deleteIcon from '../images/ph_trash.svg';
 import useCallAPI from '../CustomHooks/useCallAPI';
-import {BASE_URL, DELETE_IMAGES_ENDPOINT} from '../settings';
+import { BASE_URL, DELETE_IMAGES_ENDPOINT } from '../settings';
+
 
 export default function AdminImageCard(props) {
   const [isEditHovered, setEditIsHovered] = React.useState(false);
@@ -19,18 +20,20 @@ export default function AdminImageCard(props) {
     clearFetchResults: clearDeleteFetchResults
   } = useCallAPI();
 
-    // clear any fetch results on initial component render
-    React.useEffect(() => {
-      if (deleteFetchResults.length > 0) {
-        clearDeleteFetchResults();
-      }
-    }, [])
+  // clear any fetch results on initial component render
+  React.useEffect(() => {
+    if (deleteFetchResults.length > 0) {
+      clearDeleteFetchResults();
+    }
+  }, [])
 
-      // handle fetch response
+  // handle fetch response
   if (deleteFetchResults.length > 0) {
     if (deleteFetchResults[0].responseStatus === 200) {
       setIsDeleteConfirmationDisplayed(false);
       clearDeleteFetchResults();
+      props.deleteImageData(props.image.id)
+
     }
   }
 
@@ -67,7 +70,7 @@ export default function AdminImageCard(props) {
         />
       }
       {isDeleteConfirmationDisplayed &&
-        <Confirmation 
+        <Confirmation
           close={() => setIsDeleteConfirmationDisplayed(false)}
           handleConfirm={handleConfirm}
           id={props.id}

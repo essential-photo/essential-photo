@@ -15,7 +15,7 @@ import {
 } from '../settings';
 import useCallAPI from '../CustomHooks/useCallAPI';
 
-export default function AdminImages() { 
+export default function AdminImages() {
   const {
     isLoading: areImagesLoading,
     setFetchParameters: setImageFetchParameters,
@@ -100,6 +100,13 @@ export default function AdminImages() {
     setAlbumData([]);
   }
 
+  function deleteImageData(imageId) {
+
+    setImageData(prevData => {
+      return prevData.filter(((image) => image.id != imageId));
+    });
+  }
+
   function updateImageData(data) {
     // manually update object in data array
     setImageData(prevData => {
@@ -144,7 +151,7 @@ export default function AdminImages() {
         currentAlbumId = currentAlbum.parent_album_id;
       }
     }
-    
+
     return albumPath.reverse();
   }
 
@@ -242,24 +249,24 @@ export default function AdminImages() {
                 <img src={plusIcon} className="button__icon" alt="this is a plus icon"></img>
                 <p>Create Album</p>
               </button>
-              { isAlbumFormDisplayed &&
-                <AlbumForm 
+              {isAlbumFormDisplayed &&
+                <AlbumForm
                   close={() => setIsAlbumFormDisplayed(false)}
-                  selectedAlbumId = {selectedAlbumId}
-                  addAlbumData = {addAlbumData}
+                  selectedAlbumId={selectedAlbumId}
+                  addAlbumData={addAlbumData}
                   album={null}
                 />
               }
             </div>
             <div className="adminImages__navContainer">
-              <BreadCrumb 
+              <BreadCrumb
                 selectedAlbumId={selectedAlbumId}
                 setSelectedAlbumId={setSelectedAlbumId}
                 getAlbumPath={getAlbumPath}
                 clearImageData={clearImageData}
                 clearAlbumData={clearAlbumData}
               />
-              { selectedAlbumId &&
+              {selectedAlbumId &&
                 <div className="adminImages__back" onClick={handleBackClick}>
                   <img src={lessThanArrowIcon} alt="this is a less than arrow icon"></img>
                   <span>Back</span>
@@ -270,6 +277,7 @@ export default function AdminImages() {
           <DragDrop
             imageData={imageData}
             addImageData={addImageData}
+            deleteImageData={deleteImageData}
             updateImageData={updateImageData}
             addAlbumData={addAlbumData}
             updateAlbumData={updateAlbumData}
