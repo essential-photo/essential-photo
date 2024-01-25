@@ -8,7 +8,9 @@ There are two ways to get started. You can easily get started using a code space
 
 ## Codespace:
 
-once you have a built space, you can start the app using the dev script:
+Build a codespace from the code:code space menu in the repo UI and wait for it to build the vm. 
+
+Once you have a built space, you can start the app using the dev script:
 ```bash
 dev-scripts/start_codespace_app.sh 
 ```
