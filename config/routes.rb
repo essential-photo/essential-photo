@@ -5,8 +5,9 @@ Rails.application.routes.draw do
   namespace :api do 
     namespace :v1 do 
       mount_devise_token_auth_for 'Admin', at: 'auth'
-      resources :images, only: [:index, :create, :update]
+      resources :images, only: [:index, :create, :update, :destroy]
       resources :albums, only: [:index, :create, :update, :destroy]
+
     end
   end
 
@@ -16,3 +17,4 @@ Rails.application.routes.draw do
     req.path.exclude? 'rails/active_storage'
   }
 end
+

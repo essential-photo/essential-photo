@@ -70,7 +70,7 @@ export default function BreadCrumb(props) {
     }
   }
 
-  console.log(props.getAlbumPath(props.selectedAlbumId))
+
 
   return (
     <div className="breadCrumb">

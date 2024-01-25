@@ -1,3 +1,4 @@
+
 import React from 'react';
 import './Confirmation.css';
 import ModalLayout from '../Layouts/ModalLayout';
@@ -7,6 +8,7 @@ export default function Confirmation(props) {
   function handleYesClick(event) {
     props.handleConfirm();
   }
+
 
   return (
     <ModalLayout close={props.close}>
